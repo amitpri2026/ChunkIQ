@@ -26,7 +26,16 @@
                 Accept Invitation
             </button>
         </form>
-        <p class="text-center text-xs text-gray-400 mt-3">Joining as {{ Auth::user()->email }}</p>
+        <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+            <p class="text-xs text-gray-400">Joining as <span class="font-medium text-gray-600">{{ Auth::user()->email }}</span></p>
+            <div class="flex items-center gap-3">
+                <a href="{{ route('profile.edit') }}" class="text-xs text-blue-600 hover:underline">Profile</a>
+                <form method="POST" action="{{ route('logout') }}" class="inline">
+                    @csrf
+                    <button type="submit" class="text-xs text-gray-400 hover:text-gray-600">Log out</button>
+                </form>
+            </div>
+        </div>
     @else
         <p class="text-sm text-gray-600 text-center mb-4">
             You need to be logged in to accept this invitation.
