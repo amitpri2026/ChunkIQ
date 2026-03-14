@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -21,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_super_admin',
     ];
 
     /**
@@ -42,7 +45,25 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
+            'is_super_admin'    => 'boolean',
         ];
+    }
+
+    public function tenants(): BelongsToMany
+    {
+        return $this->belongsToMany(Tenant::class)
+            ->withPivot('role')
+            ->withTimestamps();
+    }
+
+    public function ownedTenants(): HasMany
+    {
+        return $this->hasMany(Tenant::class, 'owner_id');
+    }
+
+    public function isTenantAdmin(Tenant $tenant): bool
+    {
+        return $tenant->isAdmin($this);
     }
 }
