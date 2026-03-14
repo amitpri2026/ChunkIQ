@@ -94,8 +94,12 @@ class Tenant extends Model
     // Build the full subdomain URL for this tenant
     public function url(string $path = ''): string
     {
+        $base   = config('app.url', 'https://chunkiq.com');
+        $parsed = parse_url($base);
+        $scheme = $parsed['scheme'] ?? 'https';
+        $port   = isset($parsed['port']) ? ':' . $parsed['port'] : '';
         $domain = config('app.tenant_domain', 'chunkiq.com');
 
-        return 'https://' . $this->slug . '.' . $domain . ($path ? '/' . ltrim($path, '/') : '');
+        return $scheme . '://' . $this->slug . '.' . $domain . $port . ($path ? '/' . ltrim($path, '/') : '');
     }
 }
