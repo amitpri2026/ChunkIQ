@@ -12,52 +12,7 @@ use App\Http\Controllers\Tenant\TenantInviteController;
 use App\Http\Controllers\Tenant\TenantMemberController;
 use Illuminate\Support\Facades\Route;
 
-// ─── Public marketing site ────────────────────────────────────────────────────
-Route::get('/', fn() => view('welcome'));
-
-Route::get('/products/sharepoint',       fn() => view('products.sharepoint'))->name('products.sharepoint');
-Route::get('/products/teams',            fn() => view('products.teams'))->name('products.teams');
-Route::get('/products/onenote',          fn() => view('products.onenote'))->name('products.onenote');
-Route::get('/products/onedrive',         fn() => view('products.onedrive'))->name('products.onedrive');
-Route::redirect('/products/semantic-search', '/products/pipeline', 301);
-Route::get('/products/pipeline',         fn() => view('products.pipeline'))->name('products.pipeline');
-Route::get('/products/enterprise',       fn() => view('products.enterprise'))->name('products.enterprise');
-Route::get('/products/enterprise-cloud', fn() => view('products.enterprise-cloud'))->name('products.enterprise-cloud');
-
-// ─── Invite link (public — user may need to register first) ──────────────────
-Route::get('/invite/{token}',  [TenantInviteController::class, 'show'])->name('invite.show');
-Route::post('/invite/{token}', [TenantInviteController::class, 'accept'])->middleware('auth')->name('invite.accept');
-
-// ─── Main portal (chunkiq.com) ───────────────────────────────────────────────
-Route::middleware(['auth', 'verified'])->group(function () {
-
-    // Dashboard — shows the user's tenant list
-    Route::get('/dashboard', [TenantController::class, 'index'])->name('dashboard');
-
-    // Create / join a tenant
-    Route::get('/tenants/create',  [TenantController::class, 'create'])->name('tenants.create');
-    Route::post('/tenants',        [TenantController::class, 'store'])->name('tenants.store');
-
-    // Open workspace — issues handoff token and redirects to subdomain
-    Route::get('/tenants/{tenant}/open', [TenantController::class, 'open'])->name('tenants.open');
-
-    // Profile
-    Route::get('/profile',    [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile',  [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    // ─── Super Admin panel (/admin/...) ──────────────────────────────────────
-    Route::middleware('super.admin')->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/',                                    [SuperDashboard::class, 'index'])->name('dashboard');
-        Route::get('/tenants',                             [TenantAdminController::class, 'index'])->name('tenants');
-        Route::get('/tenants/{tenant}',                    [TenantAdminController::class, 'show'])->name('tenants.show');
-        Route::get('/users',                               [TenantAdminController::class, 'users'])->name('users');
-        Route::post('/jobs/{job}/cancel',                  [TenantAdminController::class, 'cancelJob'])->name('jobs.cancel');
-        Route::post('/users/{user}/toggle-superadmin',     [TenantAdminController::class, 'toggleSuperAdmin'])->name('users.toggle-superadmin');
-    });
-});
-
-// ─── Tenant subdomain routes ({slug}.chunkiq.com) ────────────────────────────
+// ─── Tenant subdomain routes FIRST so they take priority over non-domain routes ─
 $appHost = config('app.tenant_domain', 'chunkiq.com');
 
 // Handoff route — unauthenticated, validates token and logs user in
@@ -106,5 +61,49 @@ Route::domain('{tenantSlug}.' . $appHost)
         });
     });
 
-require __DIR__.'/auth.php';
+// ─── Public marketing site ────────────────────────────────────────────────────
+Route::get('/', fn() => view('welcome'));
 
+Route::get('/products/sharepoint',       fn() => view('products.sharepoint'))->name('products.sharepoint');
+Route::get('/products/teams',            fn() => view('products.teams'))->name('products.teams');
+Route::get('/products/onenote',          fn() => view('products.onenote'))->name('products.onenote');
+Route::get('/products/onedrive',         fn() => view('products.onedrive'))->name('products.onedrive');
+Route::redirect('/products/semantic-search', '/products/pipeline', 301);
+Route::get('/products/pipeline',         fn() => view('products.pipeline'))->name('products.pipeline');
+Route::get('/products/enterprise',       fn() => view('products.enterprise'))->name('products.enterprise');
+Route::get('/products/enterprise-cloud', fn() => view('products.enterprise-cloud'))->name('products.enterprise-cloud');
+
+// ─── Invite link (public — user may need to register first) ──────────────────
+Route::get('/invite/{token}',  [TenantInviteController::class, 'show'])->name('invite.show');
+Route::post('/invite/{token}', [TenantInviteController::class, 'accept'])->middleware('auth')->name('invite.accept');
+
+// ─── Main portal (chunkiq.com) ───────────────────────────────────────────────
+Route::middleware(['auth', 'verified'])->group(function () {
+
+    // Dashboard — shows the user's tenant list
+    Route::get('/dashboard', [TenantController::class, 'index'])->name('dashboard');
+
+    // Create / join a tenant
+    Route::get('/tenants/create',  [TenantController::class, 'create'])->name('tenants.create');
+    Route::post('/tenants',        [TenantController::class, 'store'])->name('tenants.store');
+
+    // Open workspace — issues handoff token and redirects to subdomain
+    Route::get('/tenants/{tenant}/open', [TenantController::class, 'open'])->name('tenants.open');
+
+    // Profile
+    Route::get('/profile',    [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile',  [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // ─── Super Admin panel (/admin/...) ──────────────────────────────────────
+    Route::middleware('super.admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/',                                    [SuperDashboard::class, 'index'])->name('dashboard');
+        Route::get('/tenants',                             [TenantAdminController::class, 'index'])->name('tenants');
+        Route::get('/tenants/{tenant}',                    [TenantAdminController::class, 'show'])->name('tenants.show');
+        Route::get('/users',                               [TenantAdminController::class, 'users'])->name('users');
+        Route::post('/jobs/{job}/cancel',                  [TenantAdminController::class, 'cancelJob'])->name('jobs.cancel');
+        Route::post('/users/{user}/toggle-superadmin',     [TenantAdminController::class, 'toggleSuperAdmin'])->name('users.toggle-superadmin');
+    });
+});
+
+require __DIR__.'/auth.php';
