@@ -7,6 +7,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Product pages
+Route::get('/products/sharepoint', fn() => view('products.sharepoint'))->name('products.sharepoint');
+Route::get('/products/teams', fn() => view('products.teams'))->name('products.teams');
+Route::get('/products/onenote', fn() => view('products.onenote'))->name('products.onenote');
+Route::get('/products/onedrive', fn() => view('products.onedrive'))->name('products.onedrive');
+Route::get('/products/semantic-search', fn() => view('products.semantic-search'))->name('products.semantic-search');
+Route::get('/products/pipeline', fn() => view('products.pipeline'))->name('products.pipeline');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

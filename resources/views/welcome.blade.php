@@ -1,179 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChunkIQ — Unstructured Data Pipeline</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <style>
-        :root {
-            --blue:      #0f62fe;
-            --blue-dark: #0043ce;
-            --navy:      #001141;
-            --slate:     #1a2332;
-            --light:     #f4f6fb;
-            --text:      #1c2438;
-            --muted:     #5a6478;
-            --border:    #e2e8f0;
-        }
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; color: var(--text); background: #fff; }
-        a { color: inherit; text-decoration: none; }
+@extends('layouts.public')
 
-        /* Nav */
-        nav {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0 5%; height: 64px;
-            border-bottom: 1px solid var(--border);
-            position: sticky; top: 0; background: rgba(255,255,255,0.96);
-            backdrop-filter: blur(8px); z-index: 100;
-        }
-        .nav-logo { font-size: 1.15rem; font-weight: 700; color: var(--navy); letter-spacing: -0.5px; }
-        .nav-logo span { color: var(--blue); }
-        .nav-links { display: flex; gap: 2rem; align-items: center; }
-        .nav-links a { font-size: 0.9rem; color: var(--muted); transition: color 0.2s; }
-        .nav-links a:hover { color: var(--blue); }
-        .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.2rem; border-radius: 6px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; }
-        .btn-primary { background: var(--blue); color: #fff !important; }
-        .btn-primary:hover { background: var(--blue-dark); }
-        .btn-outline { border: 1.5px solid var(--blue); color: var(--blue); background: transparent; }
-        .btn-outline:hover { background: var(--blue); color: #fff; }
-        .btn-lg { padding: 0.85rem 2rem; font-size: 1rem; border-radius: 8px; }
+@section('title', 'ChunkIQ — Unstructured Data Pipeline')
 
-        /* Hero */
-        .hero {
-            background: linear-gradient(135deg, var(--navy) 0%, #0d2757 60%, #163a6e 100%);
-            color: #fff; padding: 100px 5% 90px; text-align: center;
-        }
-        .hero-badge {
-            display: inline-block; background: rgba(15,98,254,0.25); border: 1px solid rgba(15,98,254,0.5);
-            color: #93c5fd; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.8px;
-            text-transform: uppercase; padding: 0.35rem 1rem; border-radius: 20px; margin-bottom: 1.5rem;
-        }
-        .hero h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 800; line-height: 1.15; letter-spacing: -1px; max-width: 820px; margin: 0 auto 1.2rem; }
-        .hero h1 em { font-style: normal; color: #60a5fa; }
-        .hero p { font-size: 1.15rem; color: #94a3b8; max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.7; }
-        .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-        .hero-stats { display: flex; gap: 3rem; justify-content: center; margin-top: 4rem; flex-wrap: wrap; }
-        .stat { text-align: center; }
-        .stat-num { font-size: 2rem; font-weight: 800; color: #fff; }
-        .stat-label { font-size: 0.82rem; color: #64748b; margin-top: 0.2rem; }
+@section('styles')
+<style>
+    /* Hero */
+    .hero {
+        background: linear-gradient(135deg, var(--navy) 0%, #0d2757 60%, #163a6e 100%);
+        color: #fff; padding: 100px 5% 90px; text-align: center;
+    }
+    .hero-badge {
+        display: inline-block; background: rgba(15,98,254,0.25); border: 1px solid rgba(15,98,254,0.5);
+        color: #93c5fd; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.8px;
+        text-transform: uppercase; padding: 0.35rem 1rem; border-radius: 20px; margin-bottom: 1.5rem;
+    }
+    .hero h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 800; line-height: 1.15; letter-spacing: -1px; max-width: 820px; margin: 0 auto 1.2rem; }
+    .hero h1 em { font-style: normal; color: #60a5fa; }
+    .hero p { font-size: 1.15rem; color: #94a3b8; max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.7; }
+    .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .hero-stats { display: flex; gap: 3rem; justify-content: center; margin-top: 4rem; flex-wrap: wrap; }
+    .stat { text-align: center; }
+    .stat-num { font-size: 2rem; font-weight: 800; color: #fff; }
+    .stat-label { font-size: 0.82rem; color: #64748b; margin-top: 0.2rem; }
 
-        /* Sources hero bar */
-        .source-bar {
-            background: rgba(255,255,255,0.05);
-            border-top: 1px solid rgba(255,255,255,0.08);
-            padding: 1.5rem 5%;
-            display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
-        }
-        .source-badge {
-            display: flex; align-items: center; gap: 0.5rem;
-            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
-            color: #cbd5e1; font-size: 0.82rem; font-weight: 600;
-            padding: 0.4rem 1rem; border-radius: 100px;
-        }
+    /* Sources hero bar */
+    .source-bar {
+        background: rgba(255,255,255,0.05);
+        border-top: 1px solid rgba(255,255,255,0.08);
+        padding: 1.5rem 5%;
+        display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    }
+    .source-badge {
+        display: flex; align-items: center; gap: 0.5rem;
+        background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+        color: #cbd5e1; font-size: 0.82rem; font-weight: 600;
+        padding: 0.4rem 1rem; border-radius: 100px;
+    }
 
-        /* Section common */
-        section { padding: 90px 5%; }
-        .section-label { font-size: 0.78rem; font-weight: 700; color: var(--blue); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.75rem; }
-        h2.section-title { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 1rem; }
-        .section-sub { font-size: 1.05rem; color: var(--muted); max-width: 580px; line-height: 1.7; }
-        .center { text-align: center; }
-        .center .section-sub { margin: 0 auto; }
+    /* Sources section */
+    .sources-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.5rem; margin-top: 3rem;
+    }
+    .source-card {
+        background: #fff; border-radius: 14px; border: 1px solid var(--border);
+        padding: 2rem 1.8rem;
+        transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .source-card:hover { box-shadow: 0 8px 32px rgba(15,98,254,0.10); border-color: #bfdbfe; transform: translateY(-3px); }
+    .source-icon { font-size: 2.4rem; margin-bottom: 1rem; }
+    .source-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .source-card p { font-size: 0.87rem; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+    .source-types { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
+    .source-type { font-size: 0.72rem; font-weight: 600; background: #eff6ff; color: var(--blue); border-radius: 4px; padding: 0.2rem 0.5rem; letter-spacing: 0.3px; }
+    .source-badge-new { font-size: 0.68rem; font-weight: 700; background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; border-radius: 4px; padding: 0.15rem 0.5rem; }
 
-        /* Sources section */
-        .how-bg { background: var(--light); }
-        .sources-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.5rem; margin-top: 3rem;
-        }
-        .source-card {
-            background: #fff; border-radius: 14px; border: 1px solid var(--border);
-            padding: 2rem 1.8rem;
-            transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
-        }
-        .source-card:hover { box-shadow: 0 8px 32px rgba(15,98,254,0.10); border-color: #bfdbfe; transform: translateY(-3px); }
-        .source-icon { font-size: 2.4rem; margin-bottom: 1rem; }
-        .source-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
-        .source-card p { font-size: 0.87rem; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
-        .source-types { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
-        .source-type { font-size: 0.72rem; font-weight: 600; background: #eff6ff; color: var(--blue); border-radius: 4px; padding: 0.2rem 0.5rem; letter-spacing: 0.3px; }
-        .source-badge-new { font-size: 0.68rem; font-weight: 700; background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; border-radius: 4px; padding: 0.15rem 0.5rem; }
+    /* File types */
+    .filetypes-grid { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin-top: 2.5rem; }
+    .filetype-pill {
+        display: flex; align-items: center; gap: 0.5rem;
+        background: #fff; border: 1px solid var(--border); border-radius: 100px;
+        padding: 0.5rem 1.1rem; font-size: 0.85rem; font-weight: 600;
+        color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+</style>
+@endsection
 
-        /* How it works */
-        .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; margin-top: 3.5rem; }
-        .step { background: #fff; border-radius: 12px; padding: 2rem 1.8rem; border: 1px solid var(--border); }
-        .step-num { font-size: 0.75rem; font-weight: 700; color: var(--blue); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1rem; }
-        .step-icon { font-size: 2rem; margin-bottom: 1rem; }
-        .step h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
-        .step p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
-
-        /* File types */
-        .filetypes-grid { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin-top: 2.5rem; }
-        .filetype-pill {
-            display: flex; align-items: center; gap: 0.5rem;
-            background: #fff; border: 1px solid var(--border); border-radius: 100px;
-            padding: 0.5rem 1.1rem; font-size: 0.85rem; font-weight: 600;
-            color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-        }
-
-        /* Features */
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 3.5rem; }
-        .feature-card { border: 1px solid var(--border); border-radius: 12px; padding: 1.8rem; transition: box-shadow 0.2s, border-color 0.2s; }
-        .feature-card:hover { box-shadow: 0 4px 24px rgba(15,98,254,0.1); border-color: #bfdbfe; }
-        .feature-icon { font-size: 1.6rem; margin-bottom: 1rem; }
-        .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
-        .feature-card p { font-size: 0.87rem; color: var(--muted); line-height: 1.6; }
-
-        /* Tech */
-        .tech-bg { background: var(--slate); color: #fff; }
-        .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
-        .tech-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 1.4rem 1.2rem; }
-        .tech-card .label { font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #60a5fa; margin-bottom: 0.5rem; }
-        .tech-card .value { font-size: 0.95rem; color: #e2e8f0; font-weight: 600; }
-
-        /* CTA */
-        .cta-section { background: linear-gradient(135deg, var(--blue) 0%, #1d4ed8 100%); color: #fff; text-align: center; padding: 80px 5%; }
-        .cta-section h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 800; margin-bottom: 1rem; }
-        .cta-section p { color: #bfdbfe; max-width: 540px; margin: 0 auto 2rem; line-height: 1.7; }
-        .btn-white { background: #fff; color: var(--blue); font-weight: 700; }
-        .btn-white:hover { background: #f0f4ff; }
-
-        /* Footer */
-        footer { border-top: 1px solid var(--border); padding: 2rem 5%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-        .footer-logo { font-size: 1rem; font-weight: 700; color: var(--navy); }
-        .footer-logo span { color: var(--blue); }
-        footer p { font-size: 0.82rem; color: var(--muted); }
-
-        @media (max-width: 640px) {
-            .nav-links { display: none; }
-            .hero-stats { gap: 1.5rem; }
-        }
-    </style>
-</head>
-<body>
-
-<!-- Navigation -->
-<nav>
-    <div class="nav-logo">Chunk<span>IQ</span></div>
-    <div class="nav-links">
-        <a href="#sources">Sources</a>
-        <a href="#how-it-works">How it works</a>
-        <a href="#features">Features</a>
-        <a href="#tech-stack">Technology</a>
-        @if (Route::has('login'))
-            @auth
-                <a href="{{ url('/dashboard') }}" class="btn btn-primary">Dashboard</a>
-            @else
-                <a href="{{ route('login') }}" class="btn btn-outline">Sign in</a>
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="btn btn-primary">Get started</a>
-                @endif
-            @endauth
-        @endif
-    </div>
-</nav>
+@section('content')
 
 <!-- Hero -->
 <section class="hero">
@@ -193,7 +87,6 @@
         <div class="stat"><div class="stat-num">&lt;5 min</div><div class="stat-label">Full pipeline run</div></div>
     </div>
 
-    <!-- Source bar inside hero -->
     <div class="source-bar">
         <div class="source-badge">📁 SharePoint</div>
         <div class="source-badge">💬 Microsoft Teams</div>
@@ -398,12 +291,4 @@
     </div>
 </section>
 
-<!-- Footer -->
-<footer>
-    <div class="footer-logo">Chunk<span>IQ</span></div>
-    <p>Python Extraction &middot; Azure AI Search &middot; Microsoft 365 Integration</p>
-    <p style="font-size:0.8rem;color:#94a3b8;">&copy; {{ date('Y') }} ChunkIQ. All rights reserved.</p>
-</footer>
-
-</body>
-</html>
+@endsection
