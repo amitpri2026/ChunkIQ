@@ -12,7 +12,7 @@ Route::get('/products/sharepoint', fn() => view('products.sharepoint'))->name('p
 Route::get('/products/teams', fn() => view('products.teams'))->name('products.teams');
 Route::get('/products/onenote', fn() => view('products.onenote'))->name('products.onenote');
 Route::get('/products/onedrive', fn() => view('products.onedrive'))->name('products.onedrive');
-Route::get('/products/semantic-search', fn() => view('products.semantic-search'))->name('products.semantic-search');
+Route::redirect('/products/semantic-search', '/products/pipeline', 301);
 Route::get('/products/pipeline', fn() => view('products.pipeline'))->name('products.pipeline');
 
 Route::get('/dashboard', function () {

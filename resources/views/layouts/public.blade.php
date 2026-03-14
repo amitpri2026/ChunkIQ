@@ -145,7 +145,7 @@
                 </a>
                 <a href="{{ url('/products/teams') }}" class="dropdown-item">
                     <span class="dropdown-item-icon">💬</span>
-                    <span class="dropdown-item-text">Teams Extractor</span>
+                    <span class="dropdown-item-text">Teams & Search Portal</span>
                 </a>
                 <a href="{{ url('/products/onenote') }}" class="dropdown-item">
                     <span class="dropdown-item-icon">📓</span>
@@ -156,13 +156,9 @@
                     <span class="dropdown-item-text">OneDrive Extractor</span>
                 </a>
                 <div class="dropdown-divider"></div>
-                <a href="{{ url('/products/semantic-search') }}" class="dropdown-item">
-                    <span class="dropdown-item-icon">🔍</span>
-                    <span class="dropdown-item-text">Semantic Search</span>
-                </a>
                 <a href="{{ url('/products/pipeline') }}" class="dropdown-item">
                     <span class="dropdown-item-icon">⚡</span>
-                    <span class="dropdown-item-text">Pipeline Orchestrator</span>
+                    <span class="dropdown-item-text">Processor</span>
                 </a>
             </div>
         </div>

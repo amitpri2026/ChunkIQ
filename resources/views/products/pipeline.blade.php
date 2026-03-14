@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Pipeline Orchestrator — ChunkIQ')
+@section('title', 'Processor — ChunkIQ')
 
 @section('styles')
 <style>
@@ -59,8 +59,8 @@
 <section class="product-hero">
     <div class="hero-icon">⚡</div>
     <div class="product-badge">End-to-End Automation</div>
-    <h1>Pipeline <em>Orchestrator</em></h1>
-    <p>The complete ChunkIQ pipeline — from Microsoft 365 ingestion through Python extraction, semantic chunking, vector embedding, and Azure AI Search indexing — fully automated and monitored.</p>
+    <h1>ChunkIQ <em>Processor</em></h1>
+    <p>The complete processing engine — Python extraction, semantic chunking, vector embedding, Azure AI Search indexing, and hybrid semantic search — fully automated and run on Azure Functions.</p>
     <div class="hero-cta">
         @if (Route::has('register'))
             <a href="{{ route('register') }}" class="btn btn-primary btn-lg">Get started free</a>
@@ -115,6 +115,7 @@
                     <span class="stage-tag">pypdf → .pdf</span>
                     <span class="stage-tag">python-docx → .docx</span>
                     <span class="stage-tag">openpyxl → .xlsx / .xlsm</span>
+                    <span class="stage-tag">xlrd → .xls (legacy binary)</span>
                     <span class="stage-tag">python-pptx → .pptx</span>
                     <span class="stage-tag">BeautifulSoup → .html</span>
                     <span class="stage-tag">csv / json / utf-8 → structured</span>
@@ -245,7 +246,7 @@
         <div class="tech-card"><div class="label">Runtime</div><div class="value">Python · Azure Functions</div></div>
         <div class="tech-card"><div class="label">PDF</div><div class="value">pypdf</div></div>
         <div class="tech-card"><div class="label">Word / PowerPoint</div><div class="value">python-docx · python-pptx</div></div>
-        <div class="tech-card"><div class="label">Excel</div><div class="value">openpyxl</div></div>
+        <div class="tech-card"><div class="label">Excel</div><div class="value">openpyxl (.xlsx) · xlrd (.xls)</div></div>
         <div class="tech-card"><div class="label">HTML</div><div class="value">BeautifulSoup4</div></div>
         <div class="tech-card"><div class="label">Chunking</div><div class="value">Hybrid chunker + tiktoken</div></div>
         <div class="tech-card"><div class="label">Embeddings</div><div class="value">Azure OpenAI text-embedding-3-small</div></div>
@@ -257,8 +258,8 @@
 
 <!-- CTA -->
 <section class="cta-section">
-    <h2>Run the full pipeline in minutes</h2>
-    <p>Connect your Microsoft 365 tenant, configure your Azure resources, and trigger your first full extraction-to-search pipeline run today.</p>
+    <h2>Process, index, and search — all in one product</h2>
+    <p>Deploy ChunkIQ Processor to your Azure subscription and run the complete pipeline from raw ADLS files to a live hybrid search index today.</p>
     <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
         @if (Route::has('register'))
             <a href="{{ route('register') }}" class="btn btn-white btn-lg">Create your account</a>

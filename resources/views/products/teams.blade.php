@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Teams Extractor — ChunkIQ')
+@section('title', 'Teams & Search Portal — ChunkIQ')
 
 @section('styles')
 <style>
@@ -30,6 +30,24 @@
     .channel-card-icon { font-size: 1.8rem; flex-shrink: 0; }
     .channel-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
     .channel-card p { font-size: 0.83rem; color: var(--muted); line-height: 1.55; }
+
+    .portal-highlight {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; margin-top: 3rem;
+    }
+    @media (max-width: 768px) { .portal-highlight { grid-template-columns: 1fr; } }
+    .portal-ui-mock {
+        background: var(--slate); border-radius: 14px; padding: 2rem;
+        font-family: 'Segoe UI', monospace; color: #e2e8f0;
+    }
+    .portal-ui-mock .mock-bar {
+        background: rgba(255,255,255,0.08); border-radius: 8px; padding: 0.6rem 1rem;
+        margin-bottom: 1.2rem; font-size: 0.85rem; color: #94a3b8;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+    .mock-result { background: rgba(255,255,255,0.05); border-radius: 8px; padding: 0.9rem 1rem; margin-bottom: 0.6rem; border-left: 3px solid #60a5fa; }
+    .mock-result .mock-title { font-size: 0.85rem; font-weight: 700; color: #fff; margin-bottom: 0.3rem; }
+    .mock-result .mock-meta { font-size: 0.73rem; color: #60a5fa; margin-bottom: 0.35rem; }
+    .mock-result .mock-snippet { font-size: 0.78rem; color: #94a3b8; line-height: 1.5; }
 </style>
 @endsection
 
@@ -38,9 +56,9 @@
 <!-- Hero -->
 <section class="product-hero">
     <div class="hero-icon">💬</div>
-    <div class="product-badge">Microsoft 365 Connector</div>
-    <h1>Teams <em>Extractor</em></h1>
-    <p>Automatically discover and extract every file shared across Microsoft Teams channels, team sites, and private chats — without any manual configuration per team.</p>
+    <div class="product-badge">Microsoft 365 Connector + Search Portal</div>
+    <h1>Teams <em>&amp; Search Portal</em></h1>
+    <p>Automatically extract every file shared across Microsoft Teams channels and team sites — then search across all indexed content through a built-in Streamlit search portal.</p>
     <div class="hero-cta">
         @if (Route::has('register'))
             <a href="{{ route('register') }}" class="btn btn-primary btn-lg">Get started free</a>
@@ -50,7 +68,7 @@
     <div class="stat-row">
         <div class="stat-item"><div class="num">Auto</div><div class="lbl">Team discovery</div></div>
         <div class="stat-item"><div class="num">3</div><div class="lbl">Channel types</div></div>
-        <div class="stat-item"><div class="num">Graph API</div><div class="lbl">Authentication</div></div>
+        <div class="stat-item"><div class="num">Hybrid</div><div class="lbl">BM25 + Vector search</div></div>
         <div class="stat-item"><div class="num">100%</div><div class="lbl">Python extraction</div></div>
     </div>
 </section>
@@ -135,6 +153,54 @@
     </div>
 </section>
 
+<!-- Search Portal -->
+<section>
+    <div class="center">
+        <div class="section-label">Built-in Search UI</div>
+        <h2 class="section-title">Search your Teams content instantly</h2>
+        <p class="section-sub">ChunkIQ Teams ships with a Streamlit-powered search portal. Hybrid BM25 + vector + semantic re-ranking returns the most relevant chunks from every team, channel, and document.</p>
+    </div>
+    <div class="portal-highlight">
+        <div>
+            <div class="features-grid" style="margin-top:0;grid-template-columns:1fr;">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Hybrid Search</h3>
+                    <p>Combines BM25 keyword scoring with 1,536-dimensional HNSW vector search. Results are re-ranked with Azure AI Search semantic ranking via Reciprocal Rank Fusion.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🗂️</div>
+                    <h3>Source-Aware Results</h3>
+                    <p>Every result shows the originating team, channel, file name, and folder path. Click straight through to the source document in Microsoft Teams.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Zero-Config Portal</h3>
+                    <p>The Streamlit app connects directly to your Azure AI Search index using the same connection settings as the pipeline. No additional backend required.</p>
+                </div>
+            </div>
+        </div>
+        <div class="portal-ui-mock">
+            <div class="mock-bar">🔍 &nbsp; Search across all Teams content…</div>
+            <div class="mock-result">
+                <div class="mock-title">Q3 Product Roadmap.pptx</div>
+                <div class="mock-meta">💬 product-team · General · Slide 4</div>
+                <div class="mock-snippet">"…the new pipeline will support incremental delta sync from SharePoint and OneDrive, reducing ingest time by…"</div>
+            </div>
+            <div class="mock-result">
+                <div class="mock-title">Engineering Onboarding Guide.docx</div>
+                <div class="mock-meta">💬 engineering · Private · Documents/HR</div>
+                <div class="mock-snippet">"…access to ADLS Gen2 is granted via managed identity. No connection strings are stored in code or…"</div>
+            </div>
+            <div class="mock-result">
+                <div class="mock-title">Sprint 22 Retrospective.pdf</div>
+                <div class="mock-meta">💬 dev-team · Shared · Meeting Notes</div>
+                <div class="mock-snippet">"…agreed to migrate the extraction stage to Python-only to remove the Document Intelligence dependency and…"</div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- How it works -->
 <section class="how-bg" id="how-it-works">
     <div class="center">
@@ -183,14 +249,15 @@
         <div class="tech-card"><div class="label">Extraction</div><div class="value">python-docx · pypdf · openpyxl · python-pptx</div></div>
         <div class="tech-card"><div class="label">Chunking</div><div class="value">Hybrid chunker + tiktoken</div></div>
         <div class="tech-card"><div class="label">Embeddings</div><div class="value">Azure OpenAI text-embedding-3-small</div></div>
-        <div class="tech-card"><div class="label">Search</div><div class="value">Azure AI Search (Hybrid + Semantic)</div></div>
+        <div class="tech-card"><div class="label">Search Index</div><div class="value">Azure AI Search · HNSW · BM25 · Semantic</div></div>
+        <div class="tech-card"><div class="label">Search Portal</div><div class="value">Streamlit · Python</div></div>
     </div>
 </section>
 
 <!-- CTA -->
 <section class="cta-section">
-    <h2>Index your entire Teams workspace</h2>
-    <p>One setup. Every team. Every channel. Every file — automatically extracted and ready for AI-powered search.</p>
+    <h2>Index Teams. Search instantly.</h2>
+    <p>One setup. Every team. Every channel. Every file — automatically extracted, indexed, and searchable through the built-in portal.</p>
     <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
         @if (Route::has('register'))
             <a href="{{ route('register') }}" class="btn btn-white btn-lg">Create your account</a>
