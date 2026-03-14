@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DemoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperDashboard;
 use App\Http\Controllers\SuperAdmin\TenantAdminController;
@@ -63,6 +64,9 @@ Route::domain('{tenantSlug}.' . $appHost)
 
 // ─── Public marketing site ────────────────────────────────────────────────────
 Route::get('/', fn() => view('welcome'));
+Route::get('/pricing', fn() => view('pricing'))->name('pricing');
+Route::get('/demo',  [DemoController::class, 'show'])->name('demo.show');
+Route::post('/demo', [DemoController::class, 'store'])->name('demo.store');
 
 Route::get('/products/sharepoint',       fn() => view('products.sharepoint'))->name('products.sharepoint');
 Route::get('/products/teams',            fn() => view('products.teams'))->name('products.teams');

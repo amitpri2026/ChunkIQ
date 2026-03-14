@@ -71,20 +71,18 @@
 
 <!-- Hero -->
 <section class="hero">
-    <div class="hero-badge">Unstructured Data Processing Pipeline</div>
-    <h1>Extract &amp; Index <em>Unstructured Data</em> from Across Your Organisation</h1>
-    <p>Automatically ingest files from SharePoint, Teams, OneNote, and OneDrive — extract text with Python, chunk, embed, and index for AI-powered semantic search.</p>
+    <div class="hero-badge">Microsoft 365 · Azure AI · Enterprise Ready</div>
+    <h1>Turn Your <em>Microsoft 365 Content</em> Into AI-Ready Knowledge</h1>
+    <p>Automatically ingest SharePoint, Teams, OneNote, and OneDrive — extract, chunk, embed, and index for AI-powered semantic search. All within your own Azure tenant.</p>
     <div class="hero-cta">
-        @if (Route::has('register'))
-            <a href="{{ route('register') }}" class="btn btn-primary btn-lg">Get started free</a>
-        @endif
+        <a href="{{ url('/demo') }}" class="btn btn-primary btn-lg">Book a Demo</a>
         <a href="#how-it-works" class="btn btn-lg" style="color:#fff;border:1.5px solid rgba(255,255,255,0.4);">See how it works</a>
     </div>
     <div class="hero-stats">
-        <div class="stat"><div class="stat-num">4</div><div class="stat-label">Source platforms</div></div>
-        <div class="stat"><div class="stat-num">916+</div><div class="stat-label">Chunks indexed</div></div>
-        <div class="stat"><div class="stat-num">1,536</div><div class="stat-label">Vector dimensions</div></div>
-        <div class="stat"><div class="stat-num">&lt;5 min</div><div class="stat-label">Full pipeline run</div></div>
+        <div class="stat"><div class="stat-num">4</div><div class="stat-label">M365 sources connected</div></div>
+        <div class="stat"><div class="stat-num">9</div><div class="stat-label">File formats supported</div></div>
+        <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Your Azure tenant — your data</div></div>
+        <div class="stat"><div class="stat-num">&lt;5 min</div><div class="stat-label">First pipeline run</div></div>
     </div>
 
     <div class="source-bar">
@@ -277,17 +275,60 @@
     </div>
 </section>
 
+<!-- Use Cases -->
+<section style="padding: 90px 5%; background: #fff; border-top: 1px solid var(--border);">
+    <div class="center">
+        <div class="section-label">Who it's for</div>
+        <h2 class="section-title">Built for enterprises already invested in Microsoft 365 &amp; Azure</h2>
+        <p class="section-sub">If your organisation's knowledge lives in SharePoint and Teams but your AI systems can't access it — ChunkIQ closes that gap.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3.5rem;">
+        <div class="feature-card" style="border-left:3px solid var(--blue);">
+            <div class="feature-icon">🏛️</div>
+            <h3>Knowledge Management Teams</h3>
+            <p>Thousands of documents scattered across SharePoint sites and Teams channels — impossible to search manually. ChunkIQ indexes all of it into a single AI-searchable knowledge base.</p>
+        </div>
+        <div class="feature-card" style="border-left:3px solid var(--blue);">
+            <div class="feature-icon">🤖</div>
+            <h3>AI / Copilot Teams</h3>
+            <p>Building a RAG pipeline or Copilot extension on top of enterprise data? ChunkIQ handles the entire ingestion and chunking layer so your team can focus on the AI application layer.</p>
+        </div>
+        <div class="feature-card" style="border-left:3px solid var(--blue);">
+            <div class="feature-icon">📋</div>
+            <h3>Compliance &amp; Legal Teams</h3>
+            <p>Need to make contracts, policies, and audit trails searchable and auditable? ChunkIQ processes every document with full provenance metadata — source, file, page, modification date.</p>
+        </div>
+        <div class="feature-card" style="border-left:3px solid var(--blue);">
+            <div class="feature-icon">🏗️</div>
+            <h3>Enterprise Architects</h3>
+            <p>Evaluating unstructured data pipelines for your Azure data platform? ChunkIQ deploys entirely within your Azure subscription — no data leaves your tenant.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Social proof / trust bar -->
+<section style="padding:50px 5%;background:var(--light);border-top:1px solid var(--border);text-align:center;">
+    <p style="font-size:0.82rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:2rem;">Built on the enterprise stack you already trust</p>
+    <div style="display:flex;flex-wrap:wrap;gap:2.5rem;justify-content:center;align-items:center;">
+        <div style="font-size:0.95rem;font-weight:700;color:#005a9e;">Microsoft Azure</div>
+        <div style="width:1px;height:24px;background:var(--border);"></div>
+        <div style="font-size:0.95rem;font-weight:700;color:#005a9e;">Microsoft 365</div>
+        <div style="width:1px;height:24px;background:var(--border);"></div>
+        <div style="font-size:0.95rem;font-weight:700;color:#005a9e;">Azure OpenAI</div>
+        <div style="width:1px;height:24px;background:var(--border);"></div>
+        <div style="font-size:0.95rem;font-weight:700;color:#005a9e;">Azure AI Search</div>
+        <div style="width:1px;height:24px;background:var(--border);"></div>
+        <div style="font-size:0.95rem;font-weight:700;color:#005a9e;">Azure Data Lake</div>
+    </div>
+</section>
+
 <!-- CTA -->
 <section class="cta-section">
-    <h2>Ready to unlock your unstructured data?</h2>
-    <p>Connect your Microsoft 365 tenant and have your first documents extracted, chunked, and indexed in minutes.</p>
+    <h2>Ready to make your Microsoft 365 data AI-ready?</h2>
+    <p>Talk to us about your data environment. We'll show you how ChunkIQ fits into your Azure tenant in 30 minutes.</p>
     <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-        @if (Route::has('register'))
-            <a href="{{ route('register') }}" class="btn btn-white btn-lg">Create your account</a>
-        @endif
-        @if (Route::has('login'))
-            <a href="{{ route('login') }}" class="btn btn-lg" style="color:#fff;border:1.5px solid rgba(255,255,255,0.5);">Sign in</a>
-        @endif
+        <a href="{{ url('/demo') }}" class="btn btn-white btn-lg">Book a Demo</a>
+        <a href="{{ url('/pricing') }}" class="btn btn-lg" style="color:#fff;border:1.5px solid rgba(255,255,255,0.5);">View Pricing</a>
     </div>
 </section>
 

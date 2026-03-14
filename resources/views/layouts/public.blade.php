@@ -173,15 +173,14 @@
         </div>
 
         <a href="{{ url('/') }}#tech-stack">Technology</a>
+        <a href="{{ url('/pricing') }}">Pricing</a>
 
         @if (Route::has('login'))
             @auth
                 <a href="{{ url('/dashboard') }}" class="btn btn-primary">Dashboard</a>
             @else
-                <a href="{{ route('login') }}" class="btn btn-outline">Sign in</a>
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="btn btn-primary">Get started</a>
-                @endif
+                <a href="{{ url('/demo') }}" class="btn btn-outline">Book a Demo</a>
+                <a href="{{ route('login') }}" style="color:var(--muted);font-size:0.9rem;">Sign in</a>
             @endauth
         @endif
     </div>
