@@ -160,6 +160,15 @@
                     <span class="dropdown-item-icon">⚡</span>
                     <span class="dropdown-item-text">Processor</span>
                 </a>
+                <div class="dropdown-divider"></div>
+                <a href="{{ url('/products/enterprise') }}" class="dropdown-item">
+                    <span class="dropdown-item-icon">🏢</span>
+                    <span class="dropdown-item-text">Enterprise</span>
+                </a>
+                <a href="{{ url('/products/enterprise-cloud') }}" class="dropdown-item">
+                    <span class="dropdown-item-icon">☁️</span>
+                    <span class="dropdown-item-text">Enterprise Cloud</span>
+                </a>
             </div>
         </div>
 

@@ -14,6 +14,8 @@ Route::get('/products/onenote', fn() => view('products.onenote'))->name('product
 Route::get('/products/onedrive', fn() => view('products.onedrive'))->name('products.onedrive');
 Route::redirect('/products/semantic-search', '/products/pipeline', 301);
 Route::get('/products/pipeline', fn() => view('products.pipeline'))->name('products.pipeline');
+Route::get('/products/enterprise', fn() => view('products.enterprise'))->name('products.enterprise');
+Route::get('/products/enterprise-cloud', fn() => view('products.enterprise-cloud'))->name('products.enterprise-cloud');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
