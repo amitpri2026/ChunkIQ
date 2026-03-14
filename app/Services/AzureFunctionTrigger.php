@@ -43,10 +43,11 @@ class AzureFunctionTrigger
 
         // Build payload passed to the Azure Function
         $payload = [
-            'job_id'       => $job->id,
-            'job_type'     => $job->type,
-            'job_config'   => $job->getConfigDecoded(),
-            'connector'    => $connector ? $connector->settings_decrypted : [],
+            'job_id'         => $job->id,
+            'job_type'       => $job->type,
+            'connector_type' => $connector?->type ?? 'processing',
+            'job_config'     => $job->getConfigDecoded(),
+            'connector'      => $connector ? $connector->settings_decrypted : [],
             'azure_config' => [
                 'tenant_id'       => $tenant->getConfig('azure_tenant_id'),
                 'client_id'       => $tenant->getConfig('azure_client_id'),

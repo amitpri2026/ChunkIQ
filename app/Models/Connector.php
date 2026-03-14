@@ -24,16 +24,18 @@ class Connector extends Model
             'library_name' => ['label' => 'Document Library Name',  'placeholder' => 'Documents (leave blank for default)'],
         ],
         'teams' => [
-            'team_id'    => ['label' => 'Team ID',      'placeholder' => 'Azure AD Group / Team ID'],
-            'channel_id' => ['label' => 'Channel ID',   'placeholder' => 'Leave blank to ingest all channels'],
+            'site_url'   => ['label' => 'SharePoint Site URL for Team', 'placeholder' => 'https://contoso.sharepoint.com/sites/TeamName'],
+            'team_id'    => ['label' => 'Team ID (optional)',           'placeholder' => 'Azure AD Group / Team ID'],
+            'channel_id' => ['label' => 'Channel ID (optional)',        'placeholder' => 'Leave blank to ingest all channels'],
         ],
         'onedrive' => [
             'user_email'  => ['label' => 'User Email (whose OneDrive)', 'placeholder' => 'user@contoso.com'],
             'folder_path' => ['label' => 'Folder Path',                 'placeholder' => '/ (root) or /Documents/Reports'],
         ],
         'onenote' => [
-            'notebook_id'    => ['label' => 'Notebook ID or Name', 'placeholder' => 'My Notebook'],
-            'section_filter' => ['label' => 'Section Filter',      'placeholder' => 'Leave blank for all sections'],
+            'site_url'       => ['label' => 'SharePoint Site URL',  'placeholder' => 'https://contoso.sharepoint.com/sites/SiteName'],
+            'notebook_id'    => ['label' => 'Notebook ID or Name',  'placeholder' => 'My Notebook (leave blank for all)'],
+            'section_filter' => ['label' => 'Section Filter',       'placeholder' => 'Leave blank for all sections'],
         ],
     ];
 
