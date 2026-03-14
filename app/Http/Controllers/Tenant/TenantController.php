@@ -17,8 +17,9 @@ class TenantController extends Controller
     public function index(Request $request): View
     {
         $tenants = $request->user()->tenants()->withPivot('role')->get();
+        $ownsOne = $request->user()->ownedTenants()->exists();
 
-        return view('tenant.index', compact('tenants'));
+        return view('tenant.index', compact('tenants', 'ownsOne'));
     }
 
     // Create tenant form
@@ -30,6 +31,11 @@ class TenantController extends Controller
     // Store new tenant
     public function store(Request $request): RedirectResponse
     {
+        if ($request->user()->ownedTenants()->exists()) {
+            return redirect()->route('dashboard')
+                ->withErrors(['tenant' => 'You can only own one workspace.']);
+        }
+
         $data = $request->validate([
             'name' => ['required', 'string', 'max:100'],
             'slug' => [

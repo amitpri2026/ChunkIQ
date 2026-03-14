@@ -61,19 +61,23 @@
                 </div>
                 <h3 class="font-bold text-gray-700 mb-1">No workspaces yet</h3>
                 <p class="text-sm text-gray-400 mb-5">Create your first workspace or ask someone to send you an invite link.</p>
+                @if(!$ownsOne)
                 <a href="{{ route('tenants.create') }}"
                    class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors">
                     Create a workspace
                 </a>
+                @endif
             </div>
             @endif
 
             <!-- Actions -->
             <div class="flex gap-3">
+                @if(!$ownsOne)
                 <a href="{{ route('tenants.create') }}"
                    class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors">
                     + New Workspace
                 </a>
+                @endif
                 <a href="{{ route('profile.edit') }}"
                    class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 text-sm font-semibold rounded-lg hover:border-gray-300 transition-colors">
                     My Profile
