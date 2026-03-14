@@ -20,7 +20,7 @@ class RequireTenantMember
         }
 
         if (!$tenant->hasUser($request->user())) {
-            abort(403, 'You are not a member of this workspace.');
+            return response()->view('errors.not-tenant-member', ['tenant' => $tenant], 403);
         }
 
         return $next($request);
