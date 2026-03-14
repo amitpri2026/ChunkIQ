@@ -40,7 +40,7 @@
                                 {{ $tenant->pivot->role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-600' }}">
                                 {{ ucfirst($tenant->pivot->role) }}
                             </span>
-                            <a href="{{ $tenant->url('dashboard') }}"
+                            <a href="{{ route('tenants.open', $tenant) }}"
                                class="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors">
                                 Open
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

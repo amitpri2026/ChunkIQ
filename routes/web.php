@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperDashboard;
 use App\Http\Controllers\SuperAdmin\TenantAdminController;
 use App\Http\Controllers\Tenant\ConnectorController;
+use App\Http\Controllers\Tenant\HandoffController;
 use App\Http\Controllers\Tenant\PipelineJobController;
 use App\Http\Controllers\Tenant\TenantConfigController;
 use App\Http\Controllers\Tenant\TenantController;
@@ -37,6 +38,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/tenants/create',  [TenantController::class, 'create'])->name('tenants.create');
     Route::post('/tenants',        [TenantController::class, 'store'])->name('tenants.store');
 
+    // Open workspace — issues handoff token and redirects to subdomain
+    Route::get('/tenants/{tenant}/open', [TenantController::class, 'open'])->name('tenants.open');
+
     // Profile
     Route::get('/profile',    [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile',  [ProfileController::class, 'update'])->name('profile.update');
@@ -55,6 +59,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // ─── Tenant subdomain routes ({slug}.chunkiq.com) ────────────────────────────
 $appHost = parse_url(config('app.url'), PHP_URL_HOST) ?? 'chunkiq.com';
+
+// Handoff route — unauthenticated, validates token and logs user in
+Route::domain('{tenantSlug}.' . $appHost)
+    ->middleware(['web'])
+    ->group(function () {
+        Route::get('/auth/handoff', [HandoffController::class, 'handle'])->name('tenant.handoff');
+    });
 
 Route::domain('{tenantSlug}.' . $appHost)
     ->middleware(['web', 'auth', 'verified', 'tenant.member'])

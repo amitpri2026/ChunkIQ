@@ -7,6 +7,8 @@ use App\Models\Tenant;
 use App\Support\TenantManager;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class TenantController extends Controller
@@ -59,6 +61,21 @@ class TenantController extends Controller
 
         return redirect()->away($tenant->url('dashboard'))
             ->with('success', 'Workspace created successfully.');
+    }
+
+    // Generate a handoff token and redirect user to their tenant subdomain
+    public function open(Request $request, Tenant $tenant): RedirectResponse
+    {
+        abort_unless($tenant->users()->where('user_id', $request->user()->id)->exists(), 403);
+
+        $token = Str::random(40);
+
+        Cache::put('handoff:' . $token, [
+            'user_id'     => $request->user()->id,
+            'tenant_slug' => $tenant->slug,
+        ], now()->addSeconds(60));
+
+        return redirect()->away($tenant->url('auth/handoff') . '?token=' . $token);
     }
 
     // Tenant subdomain dashboard
