@@ -58,7 +58,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // ─── Tenant subdomain routes ({slug}.chunkiq.com) ────────────────────────────
-$appHost = parse_url(config('app.url'), PHP_URL_HOST) ?? 'chunkiq.com';
+$appHost = config('app.tenant_domain', 'chunkiq.com');
 
 // Handoff route — unauthenticated, validates token and logs user in
 Route::domain('{tenantSlug}.' . $appHost)

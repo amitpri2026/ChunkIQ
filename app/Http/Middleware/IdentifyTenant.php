@@ -15,7 +15,7 @@ class IdentifyTenant
     public function handle(Request $request, Closure $next): Response
     {
         $host = $request->getHost();
-        $appHost = parse_url(config('app.url'), PHP_URL_HOST) ?? 'chunkiq.com';
+        $appHost = config('app.tenant_domain', 'chunkiq.com');
 
         // Check if this is a subdomain request (e.g. acme.chunkiq.com)
         if (str_ends_with($host, '.' . $appHost)) {
