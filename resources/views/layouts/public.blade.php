@@ -117,8 +117,36 @@
         .footer-logo span { color: var(--blue); }
         .public-footer p { font-size: 0.82rem; color: var(--muted); }
 
-        @media (max-width: 640px) {
+        /* Hamburger */
+        .nav-hamburger {
+            display: none; flex-direction: column; gap: 5px;
+            background: none; border: none; cursor: pointer; padding: 4px;
+        }
+        .nav-hamburger span {
+            display: block; width: 24px; height: 2px;
+            background: var(--navy); border-radius: 2px; transition: all 0.25s;
+        }
+
+        /* Mobile drawer */
+        .mobile-menu {
+            display: none; flex-direction: column; gap: 0;
+            background: #fff; border-bottom: 1px solid var(--border);
+            padding: 0.75rem 5% 1rem;
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a, .mobile-menu button {
+            font-size: 0.95rem; color: var(--muted); padding: 0.65rem 0;
+            border-bottom: 1px solid var(--border); text-align: left;
+            background: none; border-left: none; border-right: none; border-top: none;
+            font-family: inherit; cursor: pointer; width: 100%; transition: color 0.2s;
+        }
+        .mobile-menu a:last-child { border-bottom: none; }
+        .mobile-menu a:hover, .mobile-menu button:hover { color: var(--blue); }
+        .mobile-menu .mobile-sub { padding-left: 1rem; font-size: 0.88rem; }
+
+        @media (max-width: 768px) {
             .nav-links { display: none; }
+            .nav-hamburger { display: flex; }
         }
     </style>
     @yield('styles')
@@ -126,8 +154,15 @@
 <body>
 
 <!-- Navigation -->
-<nav class="public-nav" x-data="{ productsOpen: false }">
+<div x-data="{ mobileOpen: false }">
+<nav class="public-nav">
     <a href="{{ url('/') }}" class="nav-logo">Chunk<span>IQ</span></a>
+
+    <!-- Hamburger (mobile only) -->
+    <button class="nav-hamburger" @click="mobileOpen = !mobileOpen" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+    </button>
+
     <div class="nav-links">
         <a href="{{ url('/') }}#sources">Sources</a>
         <a href="{{ url('/') }}#how-it-works">How it works</a>
@@ -185,6 +220,33 @@
         @endif
     </div>
 </nav>
+
+<!-- Mobile menu drawer -->
+<div class="mobile-menu" :class="{ open: mobileOpen }">
+    <a href="{{ url('/') }}#sources" @click="mobileOpen = false">Sources</a>
+    <a href="{{ url('/') }}#how-it-works" @click="mobileOpen = false">How it works</a>
+    <a href="{{ url('/') }}#tech-stack" @click="mobileOpen = false">Technology</a>
+    <a href="{{ url('/pricing') }}" @click="mobileOpen = false">Pricing</a>
+    <div class="dropdown-divider" style="margin: 0.25rem 0;"></div>
+    <span style="font-size:0.72rem;font-weight:700;color:var(--blue);letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0 0.25rem;">Products</span>
+    <a href="{{ url('/products/sharepoint') }}" class="mobile-sub" @click="mobileOpen = false">📁 SharePoint Extractor</a>
+    <a href="{{ url('/products/teams') }}" class="mobile-sub" @click="mobileOpen = false">💬 Teams & Search Portal</a>
+    <a href="{{ url('/products/onenote') }}" class="mobile-sub" @click="mobileOpen = false">📓 OneNote Extractor</a>
+    <a href="{{ url('/products/onedrive') }}" class="mobile-sub" @click="mobileOpen = false">☁️ OneDrive Extractor</a>
+    <a href="{{ url('/products/pipeline') }}" class="mobile-sub" @click="mobileOpen = false">⚡ Processor</a>
+    <a href="{{ url('/products/enterprise') }}" class="mobile-sub" @click="mobileOpen = false">🏢 Enterprise</a>
+    <a href="{{ url('/products/enterprise-cloud') }}" class="mobile-sub" @click="mobileOpen = false">☁️ Enterprise Cloud</a>
+    <div class="dropdown-divider" style="margin: 0.25rem 0;"></div>
+    @if (Route::has('login'))
+        @auth
+            <a href="{{ url('/dashboard') }}" class="btn btn-primary" style="margin-top:0.5rem;" @click="mobileOpen = false">Dashboard</a>
+        @else
+            <a href="{{ url('/demo') }}" class="btn btn-outline" style="margin-top:0.5rem;" @click="mobileOpen = false">Book a Demo</a>
+            <a href="{{ route('login') }}" style="color:var(--muted);padding:0.65rem 0;" @click="mobileOpen = false">Sign in</a>
+        @endauth
+    @endif
+</div>
+</div>{{-- end x-data --}}
 
 @yield('content')
 
