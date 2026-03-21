@@ -260,15 +260,14 @@
         <p class="section-sub" style="color:#94a3b8;margin:0 auto;">Managed Azure services for storage, search, and embeddings — dedicated extractors for all document parsing.</p>
     </div>
     <div class="tech-grid">
-        <div class="tech-card"><div class="label">Storage</div><div class="value">Azure Data Lake Storage Gen2</div></div>
-        <div class="tech-card"><div class="label">Document Extraction</div><div class="value">Native format parsers</div></div>
-        <div class="tech-card"><div class="label">Embeddings</div><div class="value">Azure OpenAI text-embedding-3-small</div></div>
-        <div class="tech-card"><div class="label">Search</div><div class="value">Azure AI Search (Hybrid + Semantic)</div></div>
+        <div class="tech-card"><div class="label">Storage</div><div class="value">Scalable cloud document storage</div></div>
+        <div class="tech-card"><div class="label">Document Extraction</div><div class="value">Native parsers for all formats</div></div>
+        <div class="tech-card"><div class="label">Embeddings</div><div class="value">High-quality vector embeddings</div></div>
+        <div class="tech-card"><div class="label">Search</div><div class="value">Hybrid semantic search</div></div>
         <div class="tech-card"><div class="label">Ingest Sources</div><div class="value">Microsoft 365 Connectors</div></div>
-        <div class="tech-card"><div class="label">Pipeline Runtime</div><div class="value">Azure Functions</div></div>
-        <div class="tech-card"><div class="label">Vector Dimensions</div><div class="value">1,536-dim HNSW Index</div></div>
-        <div class="tech-card"><div class="label">Chunking</div><div class="value">Hybrid chunker</div></div>
-        <div class="tech-card"><div class="label">Portal</div><div class="value">Laravel 12 · Blade · Tailwind CSS</div></div>
+        <div class="tech-card"><div class="label">Pipeline Runtime</div><div class="value">Serverless, event-driven execution</div></div>
+        <div class="tech-card"><div class="label">Chunking</div><div class="value">Intelligent semantic chunking</div></div>
+        <div class="tech-card"><div class="label">Portal</div><div class="value">Secure web management portal</div></div>
     </div>
 </section>
 
