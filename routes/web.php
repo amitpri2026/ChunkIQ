@@ -3,6 +3,7 @@
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperDashboard;
+use App\Http\Controllers\SuperAdmin\SystemConfigController;
 use App\Http\Controllers\SuperAdmin\TenantAdminController;
 use App\Http\Controllers\Tenant\ConnectorController;
 use App\Http\Controllers\Tenant\HandoffController;
@@ -122,6 +123,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // ─── Super Admin panel (/admin/...) ──────────────────────────────────────
     Route::middleware('super.admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/',                                    [SuperDashboard::class, 'index'])->name('dashboard');
+        Route::get('/settings',                            [SystemConfigController::class, 'edit'])->name('system-config');
+        Route::put('/settings',                            [SystemConfigController::class, 'update'])->name('system-config.update');
         Route::get('/tenants',                             [TenantAdminController::class, 'index'])->name('tenants');
         Route::get('/tenants/{tenant}',                    [TenantAdminController::class, 'show'])->name('tenants.show');
         Route::get('/users',                               [TenantAdminController::class, 'users'])->name('users');

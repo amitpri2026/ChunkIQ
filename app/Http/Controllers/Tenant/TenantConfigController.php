@@ -10,131 +10,92 @@ use Illuminate\View\View;
 
 class TenantConfigController extends Controller
 {
-    // Keys exposed in the settings form — maps to the equivalent .env keys in ChunkIQ_Cloud
+    // All keys users can configure — maps config key to display label
     public const CONFIG_KEYS = [
-        // Azure identity
-        'azure_tenant_id'        => 'Azure Tenant ID',
-        'azure_client_id'        => 'Azure Client ID (App Registration)',
-        'azure_client_secret'    => 'Azure Client Secret',
-        'azure_subscription_id'  => 'Azure Subscription ID',
-        // ADLS
-        'adls_account_name'      => 'ADLS Gen2 Account Name',
-        'adls_container'         => 'ADLS Container Name',
-        'adls_key'               => 'ADLS Access Key',
-        // Function App URLs & keys (one per connector type + processor)
-        'fa_sharepoint_url'      => 'SharePoint Function App URL',
-        'fa_sharepoint_key'      => 'SharePoint Function App Key',
-        'fa_teams_url'           => 'Teams Function App URL',
-        'fa_teams_key'           => 'Teams Function App Key',
-        'fa_onedrive_url'        => 'OneDrive Function App URL',
-        'fa_onedrive_key'        => 'OneDrive Function App Key',
-        'fa_onenote_url'         => 'OneNote Function App URL',
-        'fa_onenote_key'         => 'OneNote Function App Key',
-        'fa_processor_url'       => 'Processor Function App URL',
-        'fa_processor_key'       => 'Processor Function App Key',
+        // Azure identity (App Registration)
+        'azure_tenant_id'             => 'Directory (Tenant) ID',
+        'azure_client_id'             => 'Application (Client) ID',
+        'azure_client_secret'         => 'Client Secret Value',
+        // ADLS Gen2
+        'adls_account_name'           => 'Storage Account Name',
+        'adls_container'              => 'Raw Container Name',
+        'adls_enriched_container'     => 'Enriched Container Name',
+        'adls_logs_container'         => 'Logs Container Name',
+        'adls_key'                    => 'Storage Account Key',
+        // Azure AI Search
+        'ai_search_endpoint'          => 'AI Search Endpoint URL',
+        'ai_search_key'               => 'AI Search Admin Key',
+        'ai_search_index_name'        => 'Index Name',
+        // Azure OpenAI
+        'openai_endpoint'             => 'Azure OpenAI Endpoint URL',
+        'openai_key'                  => 'Azure OpenAI API Key',
+        'openai_embedding_deployment' => 'Embedding Deployment Name',
+        'openai_chat_deployment'      => 'Chat Deployment Name',
     ];
 
     public const STEPS = [
         1 => [
             'title'       => 'App Registration',
-            'description' => 'Azure AD (Entra ID) application credentials used to authenticate all Microsoft 365 API calls.',
-            'keys'        => ['azure_tenant_id', 'azure_client_id', 'azure_client_secret', 'azure_subscription_id'],
+            'description' => 'Azure AD (Entra ID) application credentials. ChunkIQ uses these to read your Microsoft 365 data (SharePoint, Teams, OneDrive, OneNote) via the Microsoft Graph API.',
+            'keys'        => ['azure_tenant_id', 'azure_client_id', 'azure_client_secret'],
             'permissions' => [
                 ['name' => 'Sites.Read.All',          'type' => 'Application', 'reason' => 'Read all SharePoint sites and document libraries'],
                 ['name' => 'Files.Read.All',          'type' => 'Application', 'reason' => 'Read files from SharePoint, Teams and OneDrive'],
-                ['name' => 'ChannelMessage.Read.All', 'type' => 'Application', 'reason' => 'Read all Teams channel messages'],
+                ['name' => 'Notes.Read.All',          'type' => 'Application', 'reason' => 'Read all OneNote notebooks and pages'],
+                ['name' => 'User.Read.All',           'type' => 'Application', 'reason' => 'Resolve user identities for OneDrive access'],
                 ['name' => 'Team.ReadBasic.All',      'type' => 'Application', 'reason' => 'List all Teams in the organisation'],
-                ['name' => 'Notes.Read.All',          'type' => 'Application', 'reason' => 'Read all OneNote notebooks'],
-                ['name' => 'User.Read.All',           'type' => 'Application', 'reason' => 'Resolve user identities attached to documents'],
+                ['name' => 'ChannelMessage.Read.All', 'type' => 'Application', 'reason' => 'Read Teams channel messages (optional)'],
             ],
             'setup_steps' => [
-                'Open Azure Portal → Azure Active Directory (Entra ID) → App Registrations.',
-                'Click "New Registration", name it (e.g. ChunkIQ), choose "Accounts in this org only".',
-                'Copy the Application (client) ID → paste as Client ID below.',
-                'Copy the Directory (tenant) ID → paste as Tenant ID below.',
-                'Under Certificates & secrets → New client secret → copy the Value immediately.',
-                'Under API permissions → Add a permission → Microsoft Graph → Application permissions → add all permissions listed below.',
-                'Click "Grant admin consent for [your org]" to activate the permissions.',
+                'Open Azure Portal → Azure Active Directory → App Registrations → New registration.',
+                'Name it (e.g. ChunkIQ-Connector), choose "Accounts in this org only", leave Redirect URI blank.',
+                'Copy the Directory (tenant) ID from the Overview page.',
+                'Copy the Application (client) ID from the Overview page.',
+                'Go to Certificates & secrets → New client secret → set expiry to 24 months → copy the Value immediately (shown once only).',
+                'Go to API permissions → Add a permission → Microsoft Graph → Application permissions → add all permissions listed below.',
+                'Click "Grant admin consent for [your org]" — required for app-only access.',
             ],
         ],
         2 => [
             'title'       => 'Azure Storage',
-            'description' => 'Azure Data Lake Storage Gen2 where ChunkIQ stores processed and chunked documents.',
-            'keys'        => ['adls_account_name', 'adls_container', 'adls_key'],
+            'description' => 'Azure Data Lake Storage Gen2 account in your subscription. ChunkIQ writes raw ingested files, extracted content, and processing logs here. Your data never leaves your Azure tenant.',
+            'keys'        => ['adls_account_name', 'adls_container', 'adls_enriched_container', 'adls_logs_container', 'adls_key'],
             'permissions' => [],
             'setup_steps' => [
-                'Create a Storage Account in Azure Portal with "Hierarchical namespace" enabled (required for ADLS Gen2).',
-                'Create a container (e.g. chunkiq-docs) inside the storage account.',
-                'Go to the storage account → Access keys → copy Key1 or Key2.',
+                'Open Azure Portal → Storage accounts → Create.',
+                'On the Advanced tab, enable Hierarchical namespace — this makes it ADLS Gen2.',
+                'Create three containers (Private access): raw, enriched, logs.',
+                'Go to Security + networking → Access keys → copy Key 1.',
+                'Enter the account name, container names (raw / enriched / logs), and the key below.',
             ],
         ],
         3 => [
-            'title'       => 'Teams',
-            'description' => 'Azure Function App that ingests Microsoft Teams channel messages and shared files.',
-            'keys'        => ['fa_teams_url', 'fa_teams_key'],
-            'permissions' => [
-                ['name' => 'ChannelMessage.Read.All', 'type' => 'Application', 'reason' => 'Read all Teams channel messages'],
-                ['name' => 'Team.ReadBasic.All',      'type' => 'Application', 'reason' => 'List available Teams'],
-                ['name' => 'Files.Read.All',          'type' => 'Application', 'reason' => 'Read files shared in Teams channels'],
-            ],
+            'title'       => 'Azure AI Search',
+            'description' => 'Your Azure AI Search service hosts the document index that powers semantic search in ChunkIQ. The index is created automatically by ChunkIQ on the first processing run — you just need to provide the service credentials.',
+            'keys'        => ['ai_search_endpoint', 'ai_search_key', 'ai_search_index_name'],
+            'permissions' => [],
             'setup_steps' => [
-                'Deploy the ChunkIQ Teams Function App to your Azure subscription.',
-                'Open the Function App → Overview → copy the URL.',
-                'Open Functions → your function → Get function URL → copy the key part after "?code=".',
+                'Open Azure Portal → AI Search → Create.',
+                'Use the same resource group and region as your storage account.',
+                'Pricing tier: Free (evaluation) or Basic (production).',
+                'Once provisioned, copy the Url from the Overview page (e.g. https://<name>.search.windows.net).',
+                'Go to Settings → Keys → copy the Primary admin key.',
+                'Choose an index name (e.g. chunkiq-documents) — ChunkIQ will create it automatically.',
             ],
         ],
         4 => [
-            'title'       => 'SharePoint',
-            'description' => 'Azure Function App that ingests SharePoint Online document libraries and list items.',
-            'keys'        => ['fa_sharepoint_url', 'fa_sharepoint_key'],
-            'permissions' => [
-                ['name' => 'Sites.Read.All', 'type' => 'Application', 'reason' => 'Read all SharePoint site contents and metadata'],
-                ['name' => 'Files.Read.All', 'type' => 'Application', 'reason' => 'Read documents inside libraries'],
-            ],
-            'setup_steps' => [
-                'Deploy the ChunkIQ SharePoint Function App to your Azure subscription.',
-                'Open the Function App → Overview → copy the URL.',
-                'Open Functions → your function → Get function URL → copy the key part after "?code=".',
-            ],
-        ],
-        5 => [
-            'title'       => 'OneDrive',
-            'description' => 'Azure Function App that ingests OneDrive for Business files across your organisation.',
-            'keys'        => ['fa_onedrive_url', 'fa_onedrive_key'],
-            'permissions' => [
-                ['name' => 'Files.Read.All', 'type' => 'Application', 'reason' => 'Read all OneDrive files across the organisation'],
-                ['name' => 'User.Read.All',  'type' => 'Application', 'reason' => 'Enumerate users to access their OneDrive'],
-            ],
-            'setup_steps' => [
-                'Deploy the ChunkIQ OneDrive Function App to your Azure subscription.',
-                'Open the Function App → Overview → copy the URL.',
-                'Open Functions → your function → Get function URL → copy the key part after "?code=".',
-            ],
-        ],
-        6 => [
-            'title'       => 'OneNote',
-            'description' => 'Azure Function App that ingests OneNote notebooks and sections.',
-            'keys'        => ['fa_onenote_url', 'fa_onenote_key'],
-            'permissions' => [
-                ['name' => 'Notes.Read.All', 'type' => 'Application', 'reason' => 'Read all OneNote notebooks across the organisation'],
-                ['name' => 'Sites.Read.All', 'type' => 'Application', 'reason' => 'Required for notebooks stored in SharePoint-backed sites'],
-            ],
-            'setup_steps' => [
-                'Deploy the ChunkIQ OneNote Function App to your Azure subscription.',
-                'Open the Function App → Overview → copy the URL.',
-                'Open Functions → your function → Get function URL → copy the key part after "?code=".',
-            ],
-        ],
-        7 => [
-            'title'       => 'Processor',
-            'description' => 'Azure Function App that chunks, embeds, and indexes documents from ADLS into Azure AI Search.',
-            'keys'        => ['fa_processor_url', 'fa_processor_key'],
+            'title'       => 'Azure OpenAI',
+            'description' => 'Your Azure OpenAI resource generates vector embeddings for semantic search and powers the ChunkIQ chat interface. Two model deployments are required: one for embeddings, one for chat.',
+            'keys'        => ['openai_endpoint', 'openai_key', 'openai_embedding_deployment', 'openai_chat_deployment'],
             'permissions' => [],
             'setup_steps' => [
-                'Deploy the ChunkIQ Processor Function App to your Azure subscription.',
-                'Open the Function App → Overview → copy the URL.',
-                'Open Functions → your function → Get function URL → copy the key part after "?code=".',
-                'Ensure this Function App has access to the same ADLS account configured in Step 2.',
+                'Open Azure Portal → Azure OpenAI → Create (requires Azure OpenAI access approval).',
+                'Use the same region as your AI Search service for best performance.',
+                'Once provisioned, open Azure OpenAI Studio → Deployments → Create new deployment.',
+                'Deploy text-embedding-3-small (or your preferred embedding model) — note the deployment name.',
+                'Deploy gpt-4o-mini (or your preferred chat model) — note the deployment name.',
+                'Back in the resource, go to Keys and Endpoint → copy Key 1 and the Endpoint URL.',
+                'Enter all four values below.',
             ],
         ],
     ];
@@ -194,7 +155,7 @@ class TenantConfigController extends Controller
                 ->with('success', "{$stepTitle} saved. Continue with the next step.");
         }
 
-        // On step 7 (final step) completion, notify super admins
+        // Final step — notify super admins that tenant is fully configured
         \App\Models\User::where('is_super_admin', true)->each(
             fn($admin) => $admin->notify(new \App\Notifications\TenantConfiguredNotification($tenant))
         );
@@ -204,7 +165,7 @@ class TenantConfigController extends Controller
 
         return redirect()
             ->route('tenant.config.edit', ['tenantSlug' => $slug, 'step' => $currentStep])
-            ->with('success', 'All configuration saved successfully.');
+            ->with('success', 'All configuration saved successfully. You are ready to run your first sync.');
     }
 
     private function getCompletedSteps($tenant): array

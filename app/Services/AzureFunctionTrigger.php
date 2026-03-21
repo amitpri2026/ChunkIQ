@@ -3,60 +3,63 @@
 namespace App\Services;
 
 use App\Models\PipelineJob;
+use App\Models\SystemConfig;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class AzureFunctionTrigger
 {
-    // Function App URL config keys per connector type (stored in tenant_configs)
-    private const URL_KEYS = [
-        'sharepoint' => 'fa_sharepoint_url',
-        'teams'      => 'fa_teams_url',
-        'onedrive'   => 'fa_onedrive_url',
-        'onenote'    => 'fa_onenote_url',
-        'processing' => 'fa_processor_url',
-    ];
-
-    private const KEY_KEYS = [
-        'sharepoint' => 'fa_sharepoint_key',
-        'teams'      => 'fa_teams_key',
-        'onedrive'   => 'fa_onedrive_key',
-        'onenote'    => 'fa_onenote_key',
-        'processing' => 'fa_processor_key',
-    ];
-
     public function trigger(PipelineJob $job): bool
     {
         $tenant    = $job->tenant;
         $connector = $job->connector;
 
-        // Determine which Function App to call
-        $typeKey = $job->type === 'processing' ? 'processing' : ($connector?->type ?? 'processing');
-
-        $functionUrl = $tenant->getConfig(self::URL_KEYS[$typeKey] ?? '');
-        $functionKey = $tenant->getConfig(self::KEY_KEYS[$typeKey] ?? '');
+        // Function App URL and Key are platform-wide (set by super admin via /admin/settings).
+        // Users never configure these — ChunkIQ owns and operates the processing engine.
+        $functionUrl = SystemConfig::get('fa_url');
+        $functionKey = SystemConfig::get('fa_key');
 
         if (!$functionUrl) {
-            $job->markFinished('failed', 'Function App URL not configured for type: ' . $typeKey);
+            $job->markFinished('failed', 'Function App URL not configured. Contact your ChunkIQ administrator.');
             return false;
         }
 
-        // Build payload passed to the Azure Function
         $payload = [
             'job_id'         => $job->id,
             'job_type'       => $job->type,
             'connector_type' => $connector?->type ?? 'processing',
-            'job_config'     => $job->getConfigDecoded(),
             'connector'      => $connector ? $connector->settings_decrypted : [],
+            'job_config'     => $job->getConfigDecoded(),
+
+            // User's Azure AD identity — used for cross-tenant Graph API access
             'azure_config' => [
-                'tenant_id'       => $tenant->getConfig('azure_tenant_id'),
-                'client_id'       => $tenant->getConfig('azure_client_id'),
-                'client_secret'   => $tenant->getConfig('azure_client_secret'),
-                'subscription_id' => $tenant->getConfig('azure_subscription_id'),
-                'adls_account'    => $tenant->getConfig('adls_account_name'),
-                'adls_container'  => $tenant->getConfig('adls_container'),
-                'adls_key'        => $tenant->getConfig('adls_key'),
+                'tenant_id'               => $tenant->getConfig('azure_tenant_id'),
+                'client_id'               => $tenant->getConfig('azure_client_id'),
+                'client_secret'           => $tenant->getConfig('azure_client_secret'),
+                'adls_account'            => $tenant->getConfig('adls_account_name'),
+                'adls_key'                => $tenant->getConfig('adls_key'),
+                'adls_container'          => $tenant->getConfig('adls_container') ?: 'raw',
+                'adls_enriched_container' => $tenant->getConfig('adls_enriched_container') ?: 'enriched',
+                'adls_logs_container'     => $tenant->getConfig('adls_logs_container') ?: 'logs',
             ],
+
+            // User's AI Search service — index lives in their Azure tenant
+            'search_config' => [
+                'endpoint'   => $tenant->getConfig('ai_search_endpoint'),
+                'api_key'    => $tenant->getConfig('ai_search_key'),
+                'index_name' => $tenant->getConfig('ai_search_index_name') ?: 'chunkiq-documents',
+            ],
+
+            // User's Azure OpenAI service — embeddings and chat
+            'openai_config' => [
+                'endpoint'             => $tenant->getConfig('openai_endpoint'),
+                'api_key'              => $tenant->getConfig('openai_key'),
+                'embedding_deployment' => $tenant->getConfig('openai_embedding_deployment') ?: 'text-embedding-3-small',
+                'chat_deployment'      => $tenant->getConfig('openai_chat_deployment') ?: 'gpt-4o-mini',
+                'api_version'          => '2024-02-01',
+                'dimensions'           => 1536,
+            ],
+
             'callback_url'   => route('api.jobs.callback', $job->callback_token),
             'callback_token' => $job->callback_token,
         ];
