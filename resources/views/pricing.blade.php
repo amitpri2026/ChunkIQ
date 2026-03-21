@@ -126,7 +126,7 @@
 
     <div class="faq-item">
         <p class="faq-q">Do I need to change anything in Microsoft 365?</p>
-        <p class="faq-a">You need to create an Azure AD App Registration with the appropriate Microsoft Graph API permissions (read access to SharePoint, Teams, OneDrive, OneNote). Our onboarding guide walks you through this in under 10 minutes.</p>
+        <p class="faq-a">You need to create an Azure AD App Registration with the appropriate permissions (read access to SharePoint, Teams, OneDrive, OneNote). Our onboarding guide walks you through this in under 10 minutes.</p>
     </div>
 
     <div class="faq-item">

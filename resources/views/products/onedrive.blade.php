@@ -52,8 +52,8 @@
     <div class="stat-row">
         <div class="stat-item"><div class="num">Live</div><div class="lbl">Status</div></div>
         <div class="stat-item"><div class="num">∞</div><div class="lbl">Folder depth</div></div>
-        <div class="stat-item"><div class="num">Graph API</div><div class="lbl">Authentication</div></div>
-        <div class="stat-item"><div class="num">100%</div><div class="lbl">Python extraction</div></div>
+        <div class="stat-item"><div class="num">Secure Auth</div><div class="lbl">Authentication</div></div>
+        <div class="stat-item"><div class="num">100%</div><div class="lbl">Native extraction</div></div>
     </div>
 </section>
 
@@ -62,7 +62,7 @@
     <div class="center">
         <div class="section-label">Drive Coverage</div>
         <h2 class="section-title">Personal drives, shared drives — all covered</h2>
-        <p class="section-sub">ChunkIQ accesses every OneDrive drive type via the Microsoft Graph API, with no manual configuration per user.</p>
+        <p class="section-sub">ChunkIQ accesses every OneDrive drive type securely, with no manual configuration per user.</p>
     </div>
     <div class="drive-types">
         <div class="drive-card">
@@ -74,7 +74,7 @@
         <div class="drive-card">
             <div class="drive-card-icon">👥</div>
             <h3>Shared Drives</h3>
-            <p>Shared drives and document libraries shared with the user. ChunkIQ enumerates all drives accessible via the Graph API and includes them in the extraction run.</p>
+            <p>Shared drives and document libraries shared with the user. ChunkIQ enumerates all accessible drives and includes them in the extraction run.</p>
             <span class="live-badge">✓ Live</span>
         </div>
         <div class="drive-card">
@@ -102,7 +102,7 @@
         <div class="feature-card">
             <div class="feature-icon">🔄</div>
             <h3>Recursive Folder Crawl</h3>
-            <p>ChunkIQ traverses folder hierarchies of unlimited depth using the Graph API delta query pattern, capturing every file regardless of where it's stored.</p>
+            <p>ChunkIQ traverses folder hierarchies of unlimited depth using efficient delta queries, capturing every file regardless of where it's stored.</p>
         </div>
         <div class="feature-card">
             <div class="feature-icon">📎</div>
@@ -153,9 +153,9 @@
         </div>
         <div class="step">
             <div class="step-num">Step 03</div>
-            <div class="step-icon">🐍</div>
+            <div class="step-icon">📄</div>
             <h3>Extract & Chunk</h3>
-            <p>Python extractors process each file type. Text is cleaned, split into semantic chunks, and tagged with full drive/folder provenance metadata.</p>
+            <p>Dedicated extractors process each file type. Text is cleaned, split into semantic chunks, and tagged with full drive/folder provenance metadata.</p>
         </div>
         <div class="step">
             <div class="step-num">Step 04</div>
@@ -177,9 +177,8 @@
         <div class="tech-card"><div class="label">Auth Scope</div><div class="value">Files.Read.All</div></div>
         <div class="tech-card"><div class="label">Change Tracking</div><div class="value">Graph Delta Query + delta tokens</div></div>
         <div class="tech-card"><div class="label">Storage</div><div class="value">Azure Data Lake Storage Gen2</div></div>
-        <div class="tech-card"><div class="label">PDF Extraction</div><div class="value">pypdf</div></div>
-        <div class="tech-card"><div class="label">Office Extraction</div><div class="value">python-docx · openpyxl · python-pptx</div></div>
-        <div class="tech-card"><div class="label">Chunking</div><div class="value">Hybrid chunker + tiktoken</div></div>
+        <div class="tech-card"><div class="label">Document Extraction</div><div class="value">Native format parsers</div></div>
+        <div class="tech-card"><div class="label">Chunking</div><div class="value">Hybrid chunker</div></div>
         <div class="tech-card"><div class="label">Search</div><div class="value">Azure AI Search (Hybrid + Semantic)</div></div>
     </div>
 </section>

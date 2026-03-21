@@ -188,13 +188,13 @@
             <div class="step-num">Step 01</div>
             <div class="step-icon">📥</div>
             <h3>Ingest</h3>
-            <p>Microsoft Graph API pulls files from SharePoint, Teams, OneNote, and OneDrive into Azure Data Lake Storage Gen2 with full provenance metadata.</p>
+            <p>Pulls files from SharePoint, Teams, OneNote, and OneDrive into Azure Data Lake Storage Gen2 with full provenance metadata.</p>
         </div>
         <div class="step">
             <div class="step-num">Step 02</div>
-            <div class="step-icon">🐍</div>
-            <h3>Python Extraction</h3>
-            <p>Python-native extractors parse every file type — pypdf for PDFs, python-docx for Word, openpyxl for Excel, BeautifulSoup for OneNote HTML. No external OCR service needed.</p>
+            <div class="step-icon">📄</div>
+            <h3>Document Extraction</h3>
+            <p>Dedicated extractors parse every file type — PDFs, Word, Excel, PowerPoint, OneNote, and more. No external OCR service needed.</p>
         </div>
         <div class="step">
             <div class="step-num">Step 03</div>
@@ -216,13 +216,13 @@
     <div class="center">
         <div class="section-label">Capabilities</div>
         <h2 class="section-title">Everything you need for enterprise document intelligence</h2>
-        <p class="section-sub">Built on Python and Azure with a fully configurable processing pipeline — no proprietary extraction service lock-in.</p>
+        <p class="section-sub">A fully configurable processing pipeline on Azure — no proprietary extraction service lock-in.</p>
     </div>
     <div class="features-grid">
         <div class="feature-card">
-            <div class="feature-icon">🐍</div>
-            <h3>Python-Only Extraction</h3>
-            <p>All file parsing uses pure Python libraries (pypdf, python-docx, python-pptx, openpyxl, BeautifulSoup). Fast, cost-free, and fully portable — no Azure DI dependency.</p>
+            <div class="feature-icon">📄</div>
+            <h3>Native Document Extraction</h3>
+            <p>Dedicated extractors for every supported format. Fast, cost-free, and fully portable — no external extraction service dependency.</p>
         </div>
         <div class="feature-card">
             <div class="feature-icon">🧠</div>
@@ -255,17 +255,17 @@
 <!-- Tech Stack -->
 <section class="tech-bg" id="tech-stack">
     <div class="center" style="color:#fff;">
-        <div class="section-label" style="color:#60a5fa;">Built on Azure + Python</div>
-        <h2 class="section-title">Enterprise-grade infrastructure, Python-first extraction</h2>
-        <p class="section-sub" style="color:#94a3b8;margin:0 auto;">Managed Azure services for storage, search, and embeddings — open-source Python for all document parsing.</p>
+        <div class="section-label" style="color:#60a5fa;">Built on Azure</div>
+        <h2 class="section-title">Enterprise-grade infrastructure, native extraction</h2>
+        <p class="section-sub" style="color:#94a3b8;margin:0 auto;">Managed Azure services for storage, search, and embeddings — dedicated extractors for all document parsing.</p>
     </div>
     <div class="tech-grid">
         <div class="tech-card"><div class="label">Storage</div><div class="value">Azure Data Lake Storage Gen2</div></div>
-        <div class="tech-card"><div class="label">Document Extraction</div><div class="value">Native Python parsers</div></div>
+        <div class="tech-card"><div class="label">Document Extraction</div><div class="value">Native format parsers</div></div>
         <div class="tech-card"><div class="label">Embeddings</div><div class="value">Azure OpenAI text-embedding-3-small</div></div>
         <div class="tech-card"><div class="label">Search</div><div class="value">Azure AI Search (Hybrid + Semantic)</div></div>
         <div class="tech-card"><div class="label">Ingest Sources</div><div class="value">Microsoft 365 Connectors</div></div>
-        <div class="tech-card"><div class="label">Pipeline Runtime</div><div class="value">Python · Azure Functions</div></div>
+        <div class="tech-card"><div class="label">Pipeline Runtime</div><div class="value">Azure Functions</div></div>
         <div class="tech-card"><div class="label">Vector Dimensions</div><div class="value">1,536-dim HNSW Index</div></div>
         <div class="tech-card"><div class="label">Chunking</div><div class="value">Hybrid chunker</div></div>
         <div class="tech-card"><div class="label">Portal</div><div class="value">Laravel 12 · Blade · Tailwind CSS</div></div>

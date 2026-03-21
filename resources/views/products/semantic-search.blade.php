@@ -192,7 +192,7 @@
         <div class="tech-card"><div class="label">Embedding Model</div><div class="value">Azure OpenAI text-embedding-3-small</div></div>
         <div class="tech-card"><div class="label">Score Fusion</div><div class="value">Reciprocal Rank Fusion (RRF)</div></div>
         <div class="tech-card"><div class="label">Re-Ranking</div><div class="value">Azure AI Semantic Ranker</div></div>
-        <div class="tech-card"><div class="label">Chunking</div><div class="value">Hybrid chunker + tiktoken</div></div>
+        <div class="tech-card"><div class="label">Chunking</div><div class="value">Hybrid chunker</div></div>
         <div class="tech-card"><div class="label">Portal</div><div class="value">Laravel 12 · Blade · Tailwind CSS</div></div>
     </div>
 </section>

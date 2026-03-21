@@ -61,8 +61,8 @@
     <div class="stat-row">
         <div class="stat-item"><div class="num">7+</div><div class="lbl">File formats</div></div>
         <div class="stat-item"><div class="num">∞</div><div class="lbl">Sites & libraries</div></div>
-        <div class="stat-item"><div class="num">Graph API</div><div class="lbl">Authentication</div></div>
-        <div class="stat-item"><div class="num">100%</div><div class="lbl">Python extraction</div></div>
+        <div class="stat-item"><div class="num">Secure Auth</div><div class="lbl">Authentication</div></div>
+        <div class="stat-item"><div class="num">100%</div><div class="lbl">Native extraction</div></div>
     </div>
 </section>
 
@@ -76,7 +76,7 @@
     <div class="features-grid">
         <div class="feature-card">
             <div class="feature-icon">🔌</div>
-            <h3>Microsoft Graph API Integration</h3>
+            <h3>Microsoft 365 Integration</h3>
             <p>Authenticates via Azure AD app registration using client credentials. Discovers all document libraries across every site collection automatically.</p>
         </div>
         <div class="feature-card">
@@ -112,14 +112,14 @@
     <div class="center">
         <div class="section-label">Supported Formats</div>
         <h2 class="section-title">Every Office format, natively extracted</h2>
-        <p class="section-sub">Pure Python extraction — no Azure Document Intelligence or OCR service required.</p>
+        <p class="section-sub">Native extraction — no Azure Document Intelligence or OCR service required.</p>
         <div class="formats-grid">
-            <div class="format-pill">📄 .pdf <small>pypdf</small></div>
-            <div class="format-pill">📝 .docx <small>python-docx</small></div>
-            <div class="format-pill">📊 .xlsx <small>openpyxl</small></div>
-            <div class="format-pill">📽️ .pptx <small>python-pptx</small></div>
-            <div class="format-pill">🧮 .xlsm <small>openpyxl + VBA strip</small></div>
-            <div class="format-pill">📊 .xls <small>openpyxl</small></div>
+            <div class="format-pill">📄 .pdf</div>
+            <div class="format-pill">📝 .docx</div>
+            <div class="format-pill">📊 .xlsx</div>
+            <div class="format-pill">📽️ .pptx</div>
+            <div class="format-pill">🧮 .xlsm</div>
+            <div class="format-pill">📊 .xls</div>
             <div class="format-pill">📋 .csv <small>csv module</small></div>
             <div class="format-pill">📃 .txt / .md <small>utf-8 decode</small></div>
         </div>
@@ -143,13 +143,13 @@
             <div class="step-num">Step 02</div>
             <div class="step-icon">🔍</div>
             <h3>Discover & Crawl</h3>
-            <p>The Graph API enumerates all site collections, document libraries, and folder hierarchies. Files are downloaded to Azure Data Lake Storage Gen2.</p>
+            <p>ChunkIQ enumerates all site collections, document libraries, and folder hierarchies. Files are downloaded to Azure Data Lake Storage Gen2.</p>
         </div>
         <div class="step">
             <div class="step-num">Step 03</div>
-            <div class="step-icon">🐍</div>
+            <div class="step-icon">📄</div>
             <h3>Extract & Chunk</h3>
-            <p>Python extractors parse each file format, clean the text, and split it into semantic chunks with tiktoken-based length control.</p>
+            <p>Dedicated extractors parse each file format, clean the text, and split it into semantic chunks with token-based length control.</p>
         </div>
         <div class="step">
             <div class="step-num">Step 04</div>
@@ -167,14 +167,11 @@
         <h2 class="section-title">Built on Microsoft Graph + Azure</h2>
     </div>
     <div class="tech-grid">
-        <div class="tech-card"><div class="label">Ingest API</div><div class="value">Microsoft Graph API v1.0</div></div>
+        <div class="tech-card"><div class="label">Ingest</div><div class="value">Microsoft 365 Connectors</div></div>
         <div class="tech-card"><div class="label">Auth</div><div class="value">Azure AD — Client Credentials</div></div>
         <div class="tech-card"><div class="label">Storage</div><div class="value">Azure Data Lake Storage Gen2</div></div>
-        <div class="tech-card"><div class="label">Word Extraction</div><div class="value">python-docx</div></div>
-        <div class="tech-card"><div class="label">Excel Extraction</div><div class="value">openpyxl</div></div>
-        <div class="tech-card"><div class="label">PDF Extraction</div><div class="value">pypdf</div></div>
-        <div class="tech-card"><div class="label">PowerPoint</div><div class="value">python-pptx</div></div>
-        <div class="tech-card"><div class="label">Chunking</div><div class="value">Hybrid chunker + tiktoken</div></div>
+        <div class="tech-card"><div class="label">Document Extraction</div><div class="value">Native format parsers</div></div>
+        <div class="tech-card"><div class="label">Chunking</div><div class="value">Hybrid chunker</div></div>
     </div>
 </section>
 

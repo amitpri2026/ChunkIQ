@@ -69,7 +69,7 @@
         <div class="stat-item"><div class="num">Auto</div><div class="lbl">Team discovery</div></div>
         <div class="stat-item"><div class="num">3</div><div class="lbl">Channel types</div></div>
         <div class="stat-item"><div class="num">Hybrid</div><div class="lbl">BM25 + Vector search</div></div>
-        <div class="stat-item"><div class="num">100%</div><div class="lbl">Python extraction</div></div>
+        <div class="stat-item"><div class="num">100%</div><div class="lbl">Native extraction</div></div>
     </div>
 </section>
 
@@ -123,7 +123,7 @@
         <div class="feature-card">
             <div class="feature-icon">🔭</div>
             <h3>Automatic Team Discovery</h3>
-            <p>Uses the Microsoft Graph API to enumerate every team in the tenant. New teams added after initial setup are automatically included on the next run.</p>
+            <p>Enumerates every team in the tenant automatically. New teams added after initial setup are automatically included on the next run.</p>
         </div>
         <div class="feature-card">
             <div class="feature-icon">📂</div>
@@ -148,7 +148,7 @@
         <div class="feature-card">
             <div class="feature-icon">🔒</div>
             <h3>Secure by Design</h3>
-            <p>Runs entirely within your Azure tenant. Uses managed identity or service principal with the minimum required Graph API permissions.</p>
+            <p>Runs entirely within your Azure tenant. Uses managed identity or service principal with the minimum required permissions.</p>
         </div>
     </div>
 </section>
@@ -195,7 +195,7 @@
             <div class="mock-result">
                 <div class="mock-title">Sprint 22 Retrospective.pdf</div>
                 <div class="mock-meta">💬 dev-team · Shared · Meeting Notes</div>
-                <div class="mock-snippet">"…agreed to migrate the extraction stage to Python-only to remove the Document Intelligence dependency and…"</div>
+                <div class="mock-snippet">"…agreed to migrate the extraction stage to native parsers to remove the Document Intelligence dependency and…"</div>
             </div>
         </div>
     </div>
@@ -222,9 +222,9 @@
         </div>
         <div class="step">
             <div class="step-num">Step 03</div>
-            <div class="step-icon">🐍</div>
+            <div class="step-icon">📄</div>
             <h3>Extract & Chunk</h3>
-            <p>Python extractors process each file format. Text is cleaned, split into semantic chunks, and enriched with Teams-specific provenance metadata.</p>
+            <p>Dedicated extractors process each file format. Text is cleaned, split into semantic chunks, and enriched with Teams-specific provenance metadata.</p>
         </div>
         <div class="step">
             <div class="step-num">Step 04</div>
@@ -246,11 +246,11 @@
         <div class="tech-card"><div class="label">Auth Scope</div><div class="value">Group.Read.All · Files.Read.All</div></div>
         <div class="tech-card"><div class="label">Site Resolution</div><div class="value">Graph /groups/{id}/sites/root</div></div>
         <div class="tech-card"><div class="label">Storage</div><div class="value">Azure Data Lake Storage Gen2</div></div>
-        <div class="tech-card"><div class="label">Extraction</div><div class="value">python-docx · pypdf · openpyxl · python-pptx</div></div>
-        <div class="tech-card"><div class="label">Chunking</div><div class="value">Hybrid chunker + tiktoken</div></div>
+        <div class="tech-card"><div class="label">Document Extraction</div><div class="value">Native format parsers</div></div>
+        <div class="tech-card"><div class="label">Chunking</div><div class="value">Hybrid chunker</div></div>
         <div class="tech-card"><div class="label">Embeddings</div><div class="value">Azure OpenAI text-embedding-3-small</div></div>
         <div class="tech-card"><div class="label">Search Index</div><div class="value">Azure AI Search · HNSW · BM25 · Semantic</div></div>
-        <div class="tech-card"><div class="label">Search Portal</div><div class="value">Streamlit · Python</div></div>
+        <div class="tech-card"><div class="label">Search Portal</div><div class="value">Web Portal</div></div>
     </div>
 </section>
 

@@ -133,7 +133,7 @@
             <ul>
                 <li><span>☁️</span>Runs on ChunkIQ's managed Azure infrastructure</li>
                 <li><span>🛠️</span>ChunkIQ manages all compute, storage, and AI services</li>
-                <li><span>🔑</span>Read-only Graph API access to your Microsoft 365 tenant</li>
+                <li><span>🔑</span>Read-only access to your Microsoft 365 tenant</li>
                 <li><span>🚀</span>No infrastructure setup — onboard in hours, not days</li>
                 <li><span>📊</span>Managed portal and search endpoint provided</li>
             </ul>
@@ -181,7 +181,7 @@
 
     <div class="info-note">
         <div class="info-note-icon">🔑</div>
-        <p>ChunkIQ Enterprise Cloud requires a <strong>read-only Microsoft Graph API application registration</strong> in your tenant. We provide the exact permissions manifest — you approve the registration, we do the rest.</p>
+        <p>ChunkIQ Enterprise Cloud requires a <strong>read-only application registration</strong> in your tenant. We provide the exact permissions manifest — you approve the registration, we do the rest.</p>
     </div>
 </section>
 
@@ -199,9 +199,9 @@
             <div class="stage-icon">📥</div>
             <div class="stage-content">
                 <h3>Ingest — All Sources</h3>
-                <p>Our managed connector authenticates to your Microsoft 365 tenant via the Graph API and enumerates files across all four source platforms. Files are transferred to ChunkIQ's secure managed storage with content-hash deduplication.</p>
+                <p>Our managed connector authenticates to your Microsoft 365 tenant securely and enumerates files across all four source platforms. Files are transferred to ChunkIQ's secure managed storage with content-hash deduplication.</p>
                 <div class="stage-tags">
-                    <span class="stage-tag">Microsoft Graph API</span>
+                    <span class="stage-tag">Microsoft 365 Connector</span>
                     <span class="stage-tag">Managed secure storage</span>
                     <span class="stage-tag">Delta sync</span>
                     <span class="stage-tag">Content hashing</span>
@@ -211,16 +211,16 @@
 
         <div class="pipeline-stage">
             <div class="stage-num">2</div>
-            <div class="stage-icon">🐍</div>
+            <div class="stage-icon">📄</div>
             <div class="stage-content">
-                <h3>Python Extraction</h3>
-                <p>Format-aware Python extractors process every file type in parallel on ChunkIQ's managed compute. No OCR or Document Intelligence services needed — pure Python extraction for minimal cost and maximum portability.</p>
+                <h3>Document Extraction</h3>
+                <p>Format-aware extractors process every file type in parallel on ChunkIQ's managed compute. No OCR or Document Intelligence services needed — native extraction for minimal cost and maximum portability.</p>
                 <div class="stage-tags">
-                    <span class="stage-tag">pypdf → .pdf</span>
-                    <span class="stage-tag">python-docx → .docx</span>
-                    <span class="stage-tag">openpyxl → .xlsx</span>
-                    <span class="stage-tag">python-pptx → .pptx</span>
-                    <span class="stage-tag">BeautifulSoup → .html</span>
+                    <span class="stage-tag">.pdf</span>
+                    <span class="stage-tag">.docx</span>
+                    <span class="stage-tag">.xlsx</span>
+                    <span class="stage-tag">.pptx</span>
+                    <span class="stage-tag">.html</span>
                 </div>
             </div>
         </div>
@@ -233,7 +233,7 @@
                 <p>Text is split into semantic chunks and embedded using our managed Azure OpenAI deployment. Embeddings are generated in batches to keep latency low and costs predictable — all on ChunkIQ's infrastructure.</p>
                 <div class="stage-tags">
                     <span class="stage-tag">Hybrid semantic chunker</span>
-                    <span class="stage-tag">tiktoken (cl100k_base)</span>
+                    <span class="stage-tag">Token-aware splitting</span>
                     <span class="stage-tag">Managed Azure OpenAI</span>
                     <span class="stage-tag">1,536-dim vectors</span>
                 </div>

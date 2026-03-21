@@ -60,7 +60,7 @@
     <div class="hero-icon">⚡</div>
     <div class="product-badge">End-to-End Automation</div>
     <h1>ChunkIQ <em>Processor</em></h1>
-    <p>The complete processing engine — Python extraction, semantic chunking, vector embedding, Azure AI Search indexing, and hybrid semantic search — fully automated and run on Azure Functions.</p>
+    <p>The complete processing engine — document extraction, semantic chunking, vector embedding, Azure AI Search indexing, and hybrid semantic search — fully automated and run on Azure Functions.</p>
     <div class="hero-cta">
         @if (Route::has('register'))
             <a href="{{ route('register') }}" class="btn btn-primary btn-lg">Get started free</a>
@@ -89,7 +89,7 @@
             <div class="stage-icon">📥</div>
             <div class="stage-content">
                 <h3>Ingest</h3>
-                <p>The Microsoft Graph API connector authenticates to your Microsoft 365 tenant and enumerates all files across the configured source platforms. Files are downloaded to Azure Data Lake Storage Gen2 with full provenance metadata and content-hash deduplication to skip unchanged files.</p>
+                <p>The connector authenticates to your Microsoft 365 tenant and enumerates all files across the configured source platforms. Files are downloaded to Azure Data Lake Storage Gen2 with full provenance metadata and content-hash deduplication to skip unchanged files.</p>
                 <div class="sources-row">
                     <span class="source-chip">📁 SharePoint</span>
                     <span class="source-chip">💬 Microsoft Teams</span>
@@ -97,7 +97,7 @@
                     <span class="source-chip">☁️ OneDrive</span>
                 </div>
                 <div class="stage-tags">
-                    <span class="stage-tag">Microsoft Graph API</span>
+                    <span class="stage-tag">Microsoft 365 Connector</span>
                     <span class="stage-tag">ADLS Gen2</span>
                     <span class="stage-tag">Content hashing</span>
                     <span class="stage-tag">Delta sync</span>
@@ -107,17 +107,16 @@
 
         <div class="pipeline-stage">
             <div class="stage-num">2</div>
-            <div class="stage-icon">🐍</div>
+            <div class="stage-icon">📄</div>
             <div class="stage-content">
-                <h3>Python Extraction</h3>
-                <p>A format-aware dispatcher routes each file to the appropriate Python extractor. No external OCR or Document Intelligence service is required — all parsing runs with pure Python libraries, keeping costs minimal and extraction fully portable.</p>
+                <h3>Document Extraction</h3>
+                <p>A format-aware dispatcher routes each file to the appropriate extractor. No external OCR or Document Intelligence service is required — all parsing runs natively, keeping costs minimal and extraction fully portable.</p>
                 <div class="stage-tags">
-                    <span class="stage-tag">pypdf → .pdf</span>
-                    <span class="stage-tag">python-docx → .docx</span>
-                    <span class="stage-tag">openpyxl → .xlsx / .xlsm</span>
-                    <span class="stage-tag">xlrd → .xls (legacy binary)</span>
-                    <span class="stage-tag">python-pptx → .pptx</span>
-                    <span class="stage-tag">BeautifulSoup → .html</span>
+                    <span class="stage-tag">.pdf</span>
+                    <span class="stage-tag">.docx</span>
+                    <span class="stage-tag">.xlsx / .xlsm</span>
+                    <span class="stage-tag">.pptx</span>
+                    <span class="stage-tag">.html</span>
                     <span class="stage-tag">csv / json / utf-8 → structured</span>
                 </div>
             </div>
@@ -128,10 +127,10 @@
             <div class="stage-icon">✂️</div>
             <div class="stage-content">
                 <h3>Chunk &amp; Embed</h3>
-                <p>Extracted text is split into semantic chunks using a hybrid chunking strategy — respecting paragraph boundaries while keeping chunk sizes within the tiktoken token budget. Each chunk is then embedded using Azure OpenAI's text-embedding-3-small model, producing a 1,536-dimensional vector per chunk.</p>
+                <p>Extracted text is split into semantic chunks using a hybrid chunking strategy — respecting paragraph boundaries while keeping chunk sizes within the token budget. Each chunk is then embedded using Azure OpenAI's text-embedding-3-small model, producing a 1,536-dimensional vector per chunk.</p>
                 <div class="stage-tags">
                     <span class="stage-tag">Hybrid semantic chunker</span>
-                    <span class="stage-tag">tiktoken (cl100k_base)</span>
+                    <span class="stage-tag">Token-aware splitting</span>
                     <span class="stage-tag">Azure OpenAI Embeddings</span>
                     <span class="stage-tag">1,536-dim vectors</span>
                     <span class="stage-tag">Provenance metadata</span>
@@ -211,13 +210,13 @@
             <div class="step-num">~60s</div>
             <div class="step-icon">📥</div>
             <h3>Ingest</h3>
-            <p>Graph API enumeration and file download to ADLS Gen2. Time scales with number of new/changed files, not total tenant size.</p>
+            <p>File enumeration and download to ADLS Gen2. Time scales with number of new/changed files, not total tenant size.</p>
         </div>
         <div class="step">
             <div class="step-num">~90s</div>
-            <div class="step-icon">🐍</div>
+            <div class="step-icon">📄</div>
             <h3>Extraction</h3>
-            <p>Parallel Python extraction across all file types. PDF and PowerPoint files are typically the most time-intensive format to parse.</p>
+            <p>Parallel extraction across all file types. PDF and PowerPoint files are typically the most time-intensive format to parse.</p>
         </div>
         <div class="step">
             <div class="step-num">~60s</div>
@@ -241,14 +240,11 @@
         <h2 class="section-title">Every component, at a glance</h2>
     </div>
     <div class="tech-grid">
-        <div class="tech-card"><div class="label">Ingest</div><div class="value">Microsoft Graph API</div></div>
+        <div class="tech-card"><div class="label">Ingest</div><div class="value">Microsoft 365 Connectors</div></div>
         <div class="tech-card"><div class="label">Storage</div><div class="value">Azure Data Lake Storage Gen2</div></div>
-        <div class="tech-card"><div class="label">Runtime</div><div class="value">Python · Azure Functions</div></div>
-        <div class="tech-card"><div class="label">PDF</div><div class="value">pypdf</div></div>
-        <div class="tech-card"><div class="label">Word / PowerPoint</div><div class="value">python-docx · python-pptx</div></div>
-        <div class="tech-card"><div class="label">Excel</div><div class="value">openpyxl (.xlsx) · xlrd (.xls)</div></div>
-        <div class="tech-card"><div class="label">HTML</div><div class="value">BeautifulSoup4</div></div>
-        <div class="tech-card"><div class="label">Chunking</div><div class="value">Hybrid chunker + tiktoken</div></div>
+        <div class="tech-card"><div class="label">Runtime</div><div class="value">Azure Functions</div></div>
+        <div class="tech-card"><div class="label">Document Extraction</div><div class="value">Native format parsers</div></div>
+        <div class="tech-card"><div class="label">Chunking</div><div class="value">Hybrid chunker</div></div>
         <div class="tech-card"><div class="label">Embeddings</div><div class="value">Azure OpenAI text-embedding-3-small</div></div>
         <div class="tech-card"><div class="label">Search</div><div class="value">Azure AI Search (Hybrid + Semantic)</div></div>
         <div class="tech-card"><div class="label">Vector Index</div><div class="value">1,536-dim HNSW Index</div></div>

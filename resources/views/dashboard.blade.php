@@ -66,8 +66,8 @@
                 <h2 class="font-bold text-gray-700 mb-4">Pipeline Stages</h2>
                 <div class="space-y-3">
                     @foreach([
-                        ['stage' => 'Ingestion',           'desc' => 'Microsoft Graph API → ADLS Gen2 (SharePoint, Teams, OneNote, OneDrive)', 'icon' => '📥'],
-                        ['stage' => 'Python Extraction',   'desc' => 'pypdf · python-docx · python-pptx · openpyxl · BeautifulSoup',           'icon' => '🐍'],
+                        ['stage' => 'Ingestion',           'desc' => 'Microsoft 365 → Azure Storage (SharePoint, Teams, OneNote, OneDrive)', 'icon' => '📥'],
+                        ['stage' => 'Document Extraction', 'desc' => 'Native format extractors for all supported file types',                   'icon' => '📄'],
                         ['stage' => 'Chunking & Embedding','desc' => 'Hybrid semantic chunking + Azure OpenAI 1,536-dim embeddings',           'icon' => '✂️'],
                         ['stage' => 'Indexing',            'desc' => 'Azure AI Search — hybrid BM25 + vector + semantic re-ranking',           'icon' => '⚡'],
                     ] as $item)
@@ -88,13 +88,13 @@
                 <h2 class="font-bold text-gray-700 mb-4">Supported File Types</h2>
                 <div class="flex flex-wrap gap-2">
                     @foreach([
-                        ['ext' => '.pdf',   'lib' => 'pypdf'],
-                        ['ext' => '.docx',  'lib' => 'python-docx'],
-                        ['ext' => '.xlsx',  'lib' => 'openpyxl'],
-                        ['ext' => '.pptx',  'lib' => 'python-pptx'],
-                        ['ext' => '.xlsm',  'lib' => 'openpyxl'],
-                        ['ext' => '.xls',   'lib' => 'openpyxl'],
-                        ['ext' => '.html',  'lib' => 'BeautifulSoup'],
+                        ['ext' => '.pdf',   'lib' => 'Native extractor'],
+                        ['ext' => '.docx',  'lib' => 'Native extractor'],
+                        ['ext' => '.xlsx',  'lib' => 'Native extractor'],
+                        ['ext' => '.pptx',  'lib' => 'Native extractor'],
+                        ['ext' => '.xlsm',  'lib' => 'Native extractor'],
+                        ['ext' => '.xls',   'lib' => 'Native extractor'],
+                        ['ext' => '.html',  'lib' => 'Native extractor'],
                         ['ext' => '.csv',   'lib' => 'csv'],
                         ['ext' => '.json',  'lib' => 'json'],
                         ['ext' => '.txt',   'lib' => 'utf-8'],

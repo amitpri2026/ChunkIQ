@@ -253,7 +253,7 @@
 <!-- Footer -->
 <footer class="public-footer">
     <div class="footer-logo">Chunk<span>IQ</span></div>
-    <p>Python Extraction &middot; Azure AI Search &middot; Microsoft 365 Integration</p>
+    <p>Document Extraction &middot; Azure AI Search &middot; Microsoft 365 Integration</p>
     <p style="font-size:0.8rem;color:#94a3b8;">&copy; {{ date('Y') }} ChunkIQ. All rights reserved.</p>
 </footer>
 

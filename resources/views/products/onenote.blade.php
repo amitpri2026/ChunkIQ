@@ -60,8 +60,8 @@
     <div class="stat-row">
         <div class="stat-item"><div class="num">HTML</div><div class="lbl">Page format</div></div>
         <div class="stat-item"><div class="num">BS4</div><div class="lbl">Text parser</div></div>
-        <div class="stat-item"><div class="num">Graph API</div><div class="lbl">Authentication</div></div>
-        <div class="stat-item"><div class="num">100%</div><div class="lbl">Python extraction</div></div>
+        <div class="stat-item"><div class="num">Secure Auth</div><div class="lbl">Authentication</div></div>
+        <div class="stat-item"><div class="num">100%</div><div class="lbl">Native extraction</div></div>
     </div>
 </section>
 
@@ -112,7 +112,7 @@
         <div class="feature-card">
             <div class="feature-icon">🌐</div>
             <h3>HTML-to-Text Parsing</h3>
-            <p>Microsoft Graph exports OneNote pages as HTML. ChunkIQ uses BeautifulSoup4 to strip tags, decode entities, and extract clean, readable text with structural context preserved.</p>
+            <p>OneNote pages are exported as HTML. ChunkIQ strips tags, decodes entities, and extracts clean, readable text with structural context preserved.</p>
         </div>
         <div class="feature-card">
             <div class="feature-icon">📎</div>
@@ -126,7 +126,7 @@
         </div>
         <div class="feature-card">
             <div class="feature-icon">🔌</div>
-            <h3>Graph API Integration</h3>
+            <h3>Microsoft 365 Integration</h3>
             <p>Uses the OneNote-specific Microsoft Graph endpoints (/me/onenote/notebooks) with Notes.Read permissions for complete, authorised access.</p>
         </div>
         <div class="feature-card">
@@ -163,9 +163,9 @@
         </div>
         <div class="step">
             <div class="step-num">Step 03</div>
-            <div class="step-icon">🐍</div>
+            <div class="step-icon">📄</div>
             <h3>Parse & Chunk</h3>
-            <p>BeautifulSoup4 parses the HTML into clean text. Embedded attachments are processed by their respective Python extractors. All output is chunked and tagged.</p>
+            <p>HTML is parsed into clean text. Embedded attachments are processed by dedicated extractors. All output is chunked and tagged.</p>
         </div>
         <div class="step">
             <div class="step-num">Step 04</div>
@@ -180,15 +180,13 @@
 <section class="tech-bg">
     <div class="center" style="color:#fff;">
         <div class="section-label" style="color:#86efac;">Under the hood</div>
-        <h2 class="section-title">Built on Microsoft Graph + BeautifulSoup</h2>
+        <h2 class="section-title">Built for OneNote at scale</h2>
     </div>
     <div class="tech-grid">
         <div class="tech-card"><div class="label">OneNote API</div><div class="value">Graph /me/onenote/notebooks</div></div>
         <div class="tech-card"><div class="label">Auth Scope</div><div class="value">Notes.Read · Notes.Read.All</div></div>
-        <div class="tech-card"><div class="label">HTML Parser</div><div class="value">BeautifulSoup4 (html.parser)</div></div>
-        <div class="tech-card"><div class="label">Attachment: PDF</div><div class="value">pypdf</div></div>
-        <div class="tech-card"><div class="label">Attachment: Word</div><div class="value">python-docx</div></div>
-        <div class="tech-card"><div class="label">Attachment: Excel</div><div class="value">openpyxl</div></div>
+        <div class="tech-card"><div class="label">Page Parser</div><div class="value">Native HTML parser</div></div>
+        <div class="tech-card"><div class="label">Attachment Extraction</div><div class="value">Native format parsers</div></div>
         <div class="tech-card"><div class="label">Storage</div><div class="value">Azure Data Lake Storage Gen2</div></div>
         <div class="tech-card"><div class="label">Search</div><div class="value">Azure AI Search (Hybrid + Semantic)</div></div>
     </div>

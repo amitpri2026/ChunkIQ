@@ -117,7 +117,7 @@
             <div class="source-card-icon">📓</div>
             <div>
                 <h3>OneNote Extractor</h3>
-                <p>Traverses all notebooks, sections, and pages via the Graph API. Extracts structured text and preserves section hierarchy as metadata for precise retrieval.</p>
+                <p>Traverses all notebooks, sections, and pages. Extracts structured text and preserves section hierarchy as metadata for precise retrieval.</p>
             </div>
         </div>
         <div class="source-card">
@@ -131,7 +131,7 @@
 
     <div class="deployment-note">
         <div class="deployment-note-icon">🔒</div>
-        <p>All connectors authenticate via <strong>Microsoft Graph API with Managed Identity</strong> — no passwords or API keys stored in code or configuration. Your data never leaves your Azure subscription.</p>
+        <p>All connectors authenticate via <strong>Managed Identity</strong> — no passwords or API keys stored in code or configuration. Your data never leaves your Azure subscription.</p>
     </div>
 </section>
 
@@ -149,9 +149,9 @@
             <div class="stage-icon">📥</div>
             <div class="stage-content">
                 <h3>Ingest — All Sources</h3>
-                <p>The Graph API connector authenticates to your Microsoft 365 tenant and enumerates files across all four source platforms simultaneously. Files are downloaded to Azure Data Lake Storage Gen2 with content-hash deduplication so unchanged files are never re-processed.</p>
+                <p>The connector authenticates to your Microsoft 365 tenant and enumerates files across all four source platforms simultaneously. Files are downloaded to Azure Data Lake Storage Gen2 with content-hash deduplication so unchanged files are never re-processed.</p>
                 <div class="stage-tags">
-                    <span class="stage-tag">Microsoft Graph API</span>
+                    <span class="stage-tag">Microsoft 365 Connector</span>
                     <span class="stage-tag">ADLS Gen2</span>
                     <span class="stage-tag">Delta sync</span>
                     <span class="stage-tag">Content hashing</span>
@@ -162,17 +162,16 @@
 
         <div class="pipeline-stage">
             <div class="stage-num">2</div>
-            <div class="stage-icon">🐍</div>
+            <div class="stage-icon">📄</div>
             <div class="stage-content">
-                <h3>Python Extraction</h3>
-                <p>A format-aware dispatcher routes each file to the correct Python library. All extraction runs with pure Python — no external OCR or Document Intelligence services required, keeping costs minimal and the pipeline fully portable within your subscription.</p>
+                <h3>Document Extraction</h3>
+                <p>A format-aware dispatcher routes each file to the correct extractor. All extraction runs natively — no external OCR or Document Intelligence services required, keeping costs minimal and the pipeline fully portable within your subscription.</p>
                 <div class="stage-tags">
-                    <span class="stage-tag">pypdf → .pdf</span>
-                    <span class="stage-tag">python-docx → .docx</span>
-                    <span class="stage-tag">openpyxl → .xlsx / .xlsm</span>
-                    <span class="stage-tag">xlrd → .xls</span>
-                    <span class="stage-tag">python-pptx → .pptx</span>
-                    <span class="stage-tag">BeautifulSoup → .html</span>
+                    <span class="stage-tag">.pdf</span>
+                    <span class="stage-tag">.docx</span>
+                    <span class="stage-tag">.xlsx / .xlsm</span>
+                    <span class="stage-tag">.pptx</span>
+                    <span class="stage-tag">.html</span>
                 </div>
             </div>
         </div>
@@ -182,10 +181,10 @@
             <div class="stage-icon">✂️</div>
             <div class="stage-content">
                 <h3>Chunk &amp; Embed</h3>
-                <p>Extracted text is split into semantic chunks using a hybrid chunking strategy that respects paragraph boundaries while staying within the tiktoken token budget. Each chunk is embedded using Azure OpenAI's text-embedding-3-small model.</p>
+                <p>Extracted text is split into semantic chunks using a hybrid chunking strategy that respects paragraph boundaries while staying within the token budget. Each chunk is embedded using Azure OpenAI's text-embedding-3-small model.</p>
                 <div class="stage-tags">
                     <span class="stage-tag">Hybrid semantic chunker</span>
-                    <span class="stage-tag">tiktoken (cl100k_base)</span>
+                    <span class="stage-tag">Token-aware splitting</span>
                     <span class="stage-tag">Azure OpenAI Embeddings</span>
                     <span class="stage-tag">1,536-dim vectors</span>
                 </div>
@@ -237,7 +236,7 @@
         <div class="feature-card">
             <div class="feature-icon">🔁</div>
             <h3>Incremental Processing</h3>
-            <p>Content hashing and Graph API delta tokens ensure only changed files are re-processed. Large tenants stay fast — run times scale with changes, not total corpus size.</p>
+            <p>Content hashing and delta tokens ensure only changed files are re-processed. Large tenants stay fast — run times scale with changes, not total corpus size.</p>
         </div>
         <div class="feature-card">
             <div class="feature-icon">⚙️</div>
@@ -259,14 +258,12 @@
         <h2 class="section-title">Every component, at a glance</h2>
     </div>
     <div class="tech-grid">
-        <div class="tech-card"><div class="label">Ingest</div><div class="value">Microsoft Graph API</div></div>
+        <div class="tech-card"><div class="label">Ingest</div><div class="value">Microsoft 365 Connectors</div></div>
         <div class="tech-card"><div class="label">Sources</div><div class="value">SharePoint · Teams · OneNote · OneDrive</div></div>
         <div class="tech-card"><div class="label">Storage</div><div class="value">Azure Data Lake Storage Gen2</div></div>
-        <div class="tech-card"><div class="label">Runtime</div><div class="value">Python · Azure Functions</div></div>
-        <div class="tech-card"><div class="label">PDF</div><div class="value">pypdf</div></div>
-        <div class="tech-card"><div class="label">Word / PowerPoint</div><div class="value">python-docx · python-pptx</div></div>
-        <div class="tech-card"><div class="label">Excel</div><div class="value">openpyxl (.xlsx) · xlrd (.xls)</div></div>
-        <div class="tech-card"><div class="label">Chunking</div><div class="value">Hybrid chunker + tiktoken</div></div>
+        <div class="tech-card"><div class="label">Runtime</div><div class="value">Azure Functions</div></div>
+        <div class="tech-card"><div class="label">Document Extraction</div><div class="value">Native format parsers</div></div>
+        <div class="tech-card"><div class="label">Chunking</div><div class="value">Hybrid chunker</div></div>
         <div class="tech-card"><div class="label">Embeddings</div><div class="value">Azure OpenAI text-embedding-3-small</div></div>
         <div class="tech-card"><div class="label">Search</div><div class="value">Azure AI Search (Hybrid + Semantic)</div></div>
         <div class="tech-card"><div class="label">Vector Index</div><div class="value">1,536-dim HNSW Index</div></div>
