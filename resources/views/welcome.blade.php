@@ -121,7 +121,7 @@
         <div class="source-card">
             <div class="source-icon">💬</div>
             <h3>Microsoft Teams</h3>
-            <p>Reads files shared in Teams channels and private chats. Discovers all team sites and libraries via Microsoft Graph API automatically.</p>
+            <p>Reads files shared in Teams channels and private chats. Discovers all team sites and libraries automatically.</p>
             <div class="source-types">
                 <span class="source-type">Channel Files</span>
                 <span class="source-type">Team Sites</span>
@@ -132,11 +132,11 @@
         <div class="source-card">
             <div class="source-icon">📓</div>
             <h3>OneNote</h3>
-            <p>Extracts notebook pages as HTML, parses clean text via BeautifulSoup, and processes any Office attachments embedded in notes.</p>
+            <p>Extracts notebook pages, parses clean text, and processes any Office attachments embedded in notes.</p>
             <div class="source-types">
                 <span class="source-type">Notebooks</span>
                 <span class="source-type">Sections</span>
-                <span class="source-type">Pages (HTML)</span>
+                <span class="source-type">Pages</span>
                 <span class="source-type">Attachments</span>
             </div>
         </div>
@@ -161,17 +161,17 @@
     <div class="center">
         <div class="section-label">File Formats</div>
         <h2 class="section-title">Every unstructured format, handled natively</h2>
-        <p class="section-sub">Python-based extraction — no external OCR service required. Each format has a dedicated extractor.</p>
+        <p class="section-sub">No external OCR service required. Each format has a dedicated extractor built into the pipeline.</p>
         <div class="filetypes-grid">
-            <div class="filetype-pill">📄 PDF <small style="color:var(--muted);font-weight:400;">pypdf</small></div>
-            <div class="filetype-pill">📝 Word (.docx) <small style="color:var(--muted);font-weight:400;">python-docx</small></div>
-            <div class="filetype-pill">📊 Excel (.xlsx/.xls) <small style="color:var(--muted);font-weight:400;">openpyxl</small></div>
-            <div class="filetype-pill">📽️ PowerPoint (.pptx) <small style="color:var(--muted);font-weight:400;">python-pptx</small></div>
-            <div class="filetype-pill">📓 OneNote HTML <small style="color:var(--muted);font-weight:400;">BeautifulSoup</small></div>
-            <div class="filetype-pill">📋 CSV <small style="color:var(--muted);font-weight:400;">csv module</small></div>
-            <div class="filetype-pill">🔧 JSON <small style="color:var(--muted);font-weight:400;">json module</small></div>
-            <div class="filetype-pill">📃 Plain Text / Markdown <small style="color:var(--muted);font-weight:400;">utf-8 decode</small></div>
-            <div class="filetype-pill">🧮 Macro Excel (.xlsm) <small style="color:var(--muted);font-weight:400;">openpyxl + strip VBA</small></div>
+            <div class="filetype-pill">📄 PDF</div>
+            <div class="filetype-pill">📝 Word (.docx)</div>
+            <div class="filetype-pill">📊 Excel (.xlsx/.xls)</div>
+            <div class="filetype-pill">📽️ PowerPoint (.pptx)</div>
+            <div class="filetype-pill">📓 OneNote</div>
+            <div class="filetype-pill">📋 CSV</div>
+            <div class="filetype-pill">🔧 JSON</div>
+            <div class="filetype-pill">📃 Plain Text / Markdown</div>
+            <div class="filetype-pill">🧮 Macro Excel (.xlsm)</div>
         </div>
     </div>
 </section>
@@ -261,16 +261,13 @@
     </div>
     <div class="tech-grid">
         <div class="tech-card"><div class="label">Storage</div><div class="value">Azure Data Lake Storage Gen2</div></div>
-        <div class="tech-card"><div class="label">PDF Extraction</div><div class="value">pypdf (Python)</div></div>
-        <div class="tech-card"><div class="label">Word / PowerPoint</div><div class="value">python-docx · python-pptx</div></div>
-        <div class="tech-card"><div class="label">Excel</div><div class="value">openpyxl (sheets + tables)</div></div>
-        <div class="tech-card"><div class="label">HTML (OneNote)</div><div class="value">BeautifulSoup4</div></div>
+        <div class="tech-card"><div class="label">Document Extraction</div><div class="value">Native Python parsers</div></div>
         <div class="tech-card"><div class="label">Embeddings</div><div class="value">Azure OpenAI text-embedding-3-small</div></div>
         <div class="tech-card"><div class="label">Search</div><div class="value">Azure AI Search (Hybrid + Semantic)</div></div>
-        <div class="tech-card"><div class="label">Ingest Sources</div><div class="value">Microsoft Graph API</div></div>
+        <div class="tech-card"><div class="label">Ingest Sources</div><div class="value">Microsoft 365 Connectors</div></div>
         <div class="tech-card"><div class="label">Pipeline Runtime</div><div class="value">Python · Azure Functions</div></div>
         <div class="tech-card"><div class="label">Vector Dimensions</div><div class="value">1,536-dim HNSW Index</div></div>
-        <div class="tech-card"><div class="label">Chunking</div><div class="value">Hybrid chunker · tiktoken</div></div>
+        <div class="tech-card"><div class="label">Chunking</div><div class="value">Hybrid chunker</div></div>
         <div class="tech-card"><div class="label">Portal</div><div class="value">Laravel 12 · Blade · Tailwind CSS</div></div>
     </div>
 </section>
