@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" class="text-base font-bold text-gray-900" style="letter-spacing:-0.3px;">
+                    <a href="{{ route('dashboard') }}" style="font-size:1.15rem;font-weight:800;color:#001141;letter-spacing:-0.5px;text-decoration:none;">
                         Chunk<span style="color:#0f62fe;">IQ</span>
                     </a>
                 </div>

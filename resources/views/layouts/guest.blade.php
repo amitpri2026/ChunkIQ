@@ -17,8 +17,8 @@
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
             <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                <a href="/" style="font-size:1.6rem;font-weight:800;color:#001141;letter-spacing:-0.5px;text-decoration:none;">
+                    Chunk<span style="color:#0f62fe;">IQ</span>
                 </a>
             </div>
 
