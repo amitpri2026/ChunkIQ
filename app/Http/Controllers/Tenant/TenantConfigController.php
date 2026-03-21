@@ -194,6 +194,14 @@ class TenantConfigController extends Controller
                 ->with('success', "{$stepTitle} saved. Continue with the next step.");
         }
 
+        // On step 7 (final step) completion, notify super admins
+        \App\Models\User::where('is_super_admin', true)->each(
+            fn($admin) => $admin->notify(new \App\Notifications\TenantConfiguredNotification($tenant))
+        );
+        try {
+            \Illuminate\Support\Facades\Mail::to(auth()->user())->send(new \App\Mail\TenantConfiguredMail($tenant));
+        } catch (\Exception $e) {}
+
         return redirect()
             ->route('tenant.config.edit', ['tenantSlug' => $slug, 'step' => $currentStep])
             ->with('success', 'All configuration saved successfully.');

@@ -66,4 +66,9 @@ class User extends Authenticatable
     {
         return $tenant->isAdmin($this);
     }
+
+    public function supportTickets(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(SupportTicket::class);
+    }
 }

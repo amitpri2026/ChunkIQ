@@ -68,6 +68,14 @@ class TenantInviteController extends Controller
 
         $invite->update(['used_at' => now()]);
 
+        // Notify super admins
+        \App\Models\User::where('is_super_admin', true)->each(
+            fn($admin) => $admin->notify(new \App\Notifications\InviteAcceptedNotification(auth()->user(), $tenant))
+        );
+        try {
+            \Illuminate\Support\Facades\Mail::to($tenant->owner)->send(new \App\Mail\InviteAcceptedMail(auth()->user(), $tenant));
+        } catch (\Exception $e) {}
+
         return redirect()->away($tenant->url('dashboard'))
             ->with('success', 'Welcome to ' . $tenant->name . '!');
     }

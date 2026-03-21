@@ -99,6 +99,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile',  [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // Notifications
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\NotificationController::class, 'index'])->name('index');
+        Route::post('/mark-all-read', [\App\Http\Controllers\NotificationController::class, 'markAllRead'])->name('markAllRead');
+        Route::post('/{id}/read', [\App\Http\Controllers\NotificationController::class, 'markRead'])->name('markRead');
+    });
+
+    // Support Tickets
+    Route::prefix('support')->name('tickets.')->group(function () {
+        Route::get('/',               [\App\Http\Controllers\TicketController::class, 'index'])->name('index');
+        Route::get('/create',         [\App\Http\Controllers\TicketController::class, 'create'])->name('create');
+        Route::post('/',              [\App\Http\Controllers\TicketController::class, 'store'])->name('store');
+        Route::get('/{ticket}',       [\App\Http\Controllers\TicketController::class, 'show'])->name('show');
+        Route::post('/{ticket}/reply', [\App\Http\Controllers\TicketController::class, 'reply'])->name('reply');
+        Route::post('/{ticket}/close', [\App\Http\Controllers\TicketController::class, 'close'])->name('close');
+    });
+
+    // Impersonation stop (must be outside super.admin group)
+    Route::post('/impersonation/stop', [\App\Http\Controllers\SuperAdmin\ImpersonationController::class, 'stop'])->name('impersonation.stop');
+
     // ─── Super Admin panel (/admin/...) ──────────────────────────────────────
     Route::middleware('super.admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/',                                    [SuperDashboard::class, 'index'])->name('dashboard');
@@ -107,6 +127,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/users',                               [TenantAdminController::class, 'users'])->name('users');
         Route::post('/jobs/{job}/cancel',                  [TenantAdminController::class, 'cancelJob'])->name('jobs.cancel');
         Route::post('/users/{user}/toggle-superadmin',     [TenantAdminController::class, 'toggleSuperAdmin'])->name('users.toggle-superadmin');
+
+        Route::post('/users/{user}/impersonate', [\App\Http\Controllers\SuperAdmin\ImpersonationController::class, 'impersonate'])->name('impersonate');
+
+        Route::prefix('tickets')->name('tickets.')->group(function () {
+            Route::get('/',                      [\App\Http\Controllers\SuperAdmin\TicketAdminController::class, 'index'])->name('index');
+            Route::get('/{ticket}',              [\App\Http\Controllers\SuperAdmin\TicketAdminController::class, 'show'])->name('show');
+            Route::post('/{ticket}/reply',       [\App\Http\Controllers\SuperAdmin\TicketAdminController::class, 'reply'])->name('reply');
+            Route::patch('/{ticket}/status',     [\App\Http\Controllers\SuperAdmin\TicketAdminController::class, 'updateStatus'])->name('status');
+        });
     });
 });
 

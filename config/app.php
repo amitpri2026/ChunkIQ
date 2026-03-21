@@ -56,6 +56,8 @@ return [
 
     'tenant_domain' => env('TENANT_DOMAIN', 'chunkiq.com'),
 
+    'super_admin_email' => env('SUPER_ADMIN_EMAIL', 'admin@chunkiq.com'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

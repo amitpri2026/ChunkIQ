@@ -14,12 +14,14 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: [
             \App\Http\Middleware\IdentifyTenant::class,
+            \App\Http\Middleware\ShareImpersonationState::class,
         ]);
 
         $middleware->alias([
-            'tenant.member' => \App\Http\Middleware\RequireTenantMember::class,
-            'tenant.admin'  => \App\Http\Middleware\RequireTenantAdmin::class,
-            'super.admin'   => \App\Http\Middleware\RequireSuperAdmin::class,
+            'tenant.member'       => \App\Http\Middleware\RequireTenantMember::class,
+            'tenant.admin'        => \App\Http\Middleware\RequireTenantAdmin::class,
+            'super.admin'         => \App\Http\Middleware\RequireSuperAdmin::class,
+            'share.impersonation' => \App\Http\Middleware\ShareImpersonationState::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

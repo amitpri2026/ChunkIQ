@@ -45,6 +45,17 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        // Notify super admins
+        \App\Models\User::where('is_super_admin', true)->each(
+            fn($admin) => $admin->notify(new \App\Notifications\UserRegisteredNotification($user))
+        );
+        // Email new user (CC super admin)
+        try {
+            \Illuminate\Support\Facades\Mail::to($user)->send(new \App\Mail\UserRegisteredMail($user));
+        } catch (\Exception $e) {
+            // Don't fail registration if email fails
+        }
+
         return redirect(route('dashboard', absolute: false));
     }
 }

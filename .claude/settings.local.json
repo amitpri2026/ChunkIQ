@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd:*)",
+      "Bash(cp:*)",
+      "Bash(winget install:*)",
+      "Bash(net start:*)",
+      "Bash(sc query:*)",
+      "Bash(sc queryex:*)",
+      "Bash(powershell -Command \"Get-Service | Where-Object { \\\\$_.DisplayName -like '*mysql*' -or \\\\$_.Name -like '*mysql*' } | Select-Object Name, DisplayName, Status\" 2>&1)",
+      "Bash(powershell -Command \"New-Item -ItemType Directory -Force -Path 'C:\\\\ProgramData\\\\MySQL\\\\MySQL Server 8.4\\\\Data'\" 2>&1)",
+      "Bash(powershell -Command \"\n@'\n[mysqld]\nbasedir=C:/Program Files/MySQL/MySQL Server 8.4\ndatadir=C:/ProgramData/MySQL/MySQL Server 8.4/Data\nport=3306\n\n[client]\nport=3306\n'@ | Set-Content -Path 'C:\\\\ProgramData\\\\MySQL\\\\MySQL Server 8.4\\\\my.ini' -Encoding ASCII\n\" 2>&1)",
+      "Bash(powershell -Command \"New-Item -ItemType Directory -Force 'C:\\\\MySQLData'\" 2>&1 && powershell -Command \"Start-Process -FilePath 'C:\\\\\\\\Program Files\\\\\\\\MySQL\\\\\\\\MySQL Server 8.4\\\\\\\\bin\\\\\\\\mysqld.exe' -ArgumentList '--datadir=C:\\\\\\\\MySQLData', '--initialize-insecure', '--console' -Wait -NoNewWindow\" 2>&1)",
+      "Bash(powershell -Command \"Start-Process -FilePath 'C:\\\\\\\\Program Files\\\\\\\\MySQL\\\\\\\\MySQL Server 8.4\\\\\\\\bin\\\\\\\\mysqld.exe' -ArgumentList '--install', 'MySQL84', '--datadir=C:\\\\\\\\MySQLData' -Verb RunAs -Wait\" 2>&1 && net start MySQL84 2>&1)",
+      "Bash(powershell -Command \"Start-Process -FilePath 'C:\\\\\\\\Program Files\\\\\\\\MySQL\\\\\\\\MySQL Server 8.4\\\\\\\\bin\\\\\\\\mysqld.exe' -ArgumentList '--datadir=C:\\\\\\\\MySQLData', '--port=3306', '--console' -WindowStyle Hidden\" 2>&1 && echo \"MySQL started in background\" && sleep 3 && \"C:/Program Files/MySQL/MySQL Server 8.4/bin/mysql.exe\" -u root --connect-timeout=5 -e \"SELECT VERSION\\(\\);\" 2>&1)",
+      "Bash(\"C:/Program Files/MySQL/MySQL Server 8.4/bin/mysql.exe\" -u root -e \"\nCREATE DATABASE IF NOT EXISTS chunkiq_local CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\nALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'chunkiq_root_2026';\nFLUSH PRIVILEGES;\nSHOW DATABASES;\n\" 2>&1)",
+      "Bash(\"C:/Program Files/MySQL/MySQL Server 8.4/bin/mysql.exe\" -u root -e \"\nCREATE DATABASE IF NOT EXISTS chunkiq_local CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\nALTER USER 'root'@'localhost' IDENTIFIED BY 'chunkiq_root_2026';\nFLUSH PRIVILEGES;\nSHOW DATABASES;\n\" 2>&1)",
+      "Bash(start:*)",
+      "Bash(powershell -Command \"Get-ChildItem -Path 'C:\\\\Users\\\\amitp', 'C:\\\\Program Files', 'C:\\\\Program Files \\(x86\\)' -Recurse -Filter 'TablePlus.exe' -ErrorAction SilentlyContinue | Select-Object -First 3 FullName\" 2>&1)",
+      "Bash(echo y:*)",
+      "Bash(\"C:/Program Files/PuTTY/plink.exe\" -batch -i \"C:\\\\Users\\\\amitp\\\\OneDrive\\\\Desktop\\\\CODE\\\\VUltr\\\\vultr.ppk\" forge@139.84.135.203 \"sudo apt-get update -qq && sudo apt-get install -y certbot python3-certbot-dns-vultr 2>&1 | tail -5\" 2>&1)",
+      "Bash(\"C:/Program Files/PuTTY/plink.exe\" -batch -i \"C:\\\\Users\\\\amitp\\\\OneDrive\\\\Desktop\\\\CODE\\\\VUltr\\\\vultr.ppk\" forge@139.84.135.203 \"sudo -n whoami 2>&1 && sudo -n apt-get install -y certbot python3-certbot-dns-vultr 2>&1 | tail -10\" 2>&1)",
+      "Bash(\"C:/Program Files/PuTTY/plink.exe\" -batch -i \"C:\\\\Users\\\\amitp\\\\OneDrive\\\\Desktop\\\\CODE\\\\VUltr\\\\vultr.ppk\" forge@139.84.135.203 \"curl -s https://get.acme.sh | sh -s email=amitpri@gmail.com 2>&1 | tail -5\" 2>&1)",
+      "Bash(\"C:/Program Files/PuTTY/plink.exe\" -batch -i \"C:\\\\Users\\\\amitp\\\\OneDrive\\\\Desktop\\\\CODE\\\\VUltr\\\\vultr.ppk\" forge@139.84.135.203 \"export VULTR_API_KEY='H5SLRXU3NB7JTM2Q3JWXDHLIDZJQGAALFE3A' && ~/.acme.sh/acme.sh --issue --dns dns_vultr -d chunkiq.com -d '*.chunkiq.com' 2>&1\" 2>&1)",
+      "Bash(\"C:/Program Files/PuTTY/plink.exe\" -batch -i \"C:\\\\Users\\\\amitp\\\\OneDrive\\\\Desktop\\\\CODE\\\\VUltr\\\\vultr.ppk\" forge@139.84.135.203 \"\nmkdir -p /home/forge/ssl/chunkiq.com\n~/.acme.sh/acme.sh --install-cert -d chunkiq.com -d '*.chunkiq.com' \\\\\n  --cert-file      /home/forge/ssl/chunkiq.com/cert.pem \\\\\n  --key-file       /home/forge/ssl/chunkiq.com/key.pem \\\\\n  --fullchain-file /home/forge/ssl/chunkiq.com/fullchain.pem \\\\\n  --reloadcmd 'sudo /etc/init.d/nginx reload' 2>&1\n\" 2>&1)",
+      "Bash(\"C:/Program Files/PuTTY/plink.exe\" -batch -i \"C:\\\\Users\\\\amitp\\\\OneDrive\\\\Desktop\\\\CODE\\\\VUltr\\\\vultr.ppk\" forge@139.84.135.203 \"cat /etc/nginx/sites-available/chunkiq.com\" 2>&1)",
+      "Bash(\"C:/Program Files/PuTTY/plink.exe\" -batch -i \"C:\\\\Users\\\\amitp\\\\OneDrive\\\\Desktop\\\\CODE\\\\VUltr\\\\vultr.ppk\" forge@139.84.135.203 \"openssl x509 -in /etc/nginx/ssl/domains/1389907/3236269/server.crt -noout -text 2>&1 | grep -A2 'Subject Alternative\\\\|DNS:'\" 2>&1)",
+      "Bash(\"C:/Program Files/PuTTY/plink.exe\" -batch -i \"C:\\\\Users\\\\amitp\\\\OneDrive\\\\Desktop\\\\CODE\\\\VUltr\\\\vultr.ppk\" forge@139.84.135.203 \"ls -la /etc/nginx/sites-available/chunkiq.com && ls -la /etc/nginx/ssl/domains/1389907/3236269/\" 2>&1)",
+      "Bash(\"C:/Program Files/PuTTY/plink.exe\" -batch -i \"C:\\\\Users\\\\amitp\\\\OneDrive\\\\Desktop\\\\CODE\\\\VUltr\\\\vultr.ppk\" forge@139.84.135.203 \"echo '===FULLCHAIN===' && cat /home/forge/ssl/chunkiq.com/fullchain.pem && echo '===KEY===' && cat /home/forge/ssl/chunkiq.com/key.pem\" 2>&1)",
+      "Bash(\"C:/Program Files/PuTTY/plink.exe\" -batch -i \"C:\\\\Users\\\\amitp\\\\OneDrive\\\\Desktop\\\\CODE\\\\VUltr\\\\vultr.ppk\" forge@139.84.135.203 \"sudo -n -l 2>&1\")",
+      "Bash(\"C:/Program Files/PuTTY/plink.exe\" -batch -i \"C:\\\\Users\\\\amitp\\\\OneDrive\\\\Desktop\\\\CODE\\\\VUltr\\\\vultr.ppk\" forge@139.84.135.203 \"ls -la /etc/nginx/forge-conf/3083577/ && ls -la /etc/nginx/forge-conf/3083577/chunkiq.com/\" 2>&1)",
+      "Bash(curl:*)",
+      "WebFetch(domain:chunkiq.com)",
+      "WebFetch(domain:myserver.chunkiq.com)",
+      "Bash(php artisan:*)"
+    ]
+  }
+}

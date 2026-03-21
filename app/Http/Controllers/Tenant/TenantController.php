@@ -59,6 +59,14 @@ class TenantController extends Controller
         // Creator automatically joins as admin
         $tenant->users()->attach($request->user()->id, ['role' => 'admin']);
 
+        // Notify super admins
+        \App\Models\User::where('is_super_admin', true)->each(
+            fn($admin) => $admin->notify(new \App\Notifications\TenantCreatedNotification($tenant))
+        );
+        try {
+            \Illuminate\Support\Facades\Mail::to(auth()->user())->send(new \App\Mail\TenantCreatedMail($tenant));
+        } catch (\Exception $e) {}
+
         return redirect()->away($tenant->url('dashboard'))
             ->with('success', 'Workspace created successfully.');
     }

@@ -28,16 +28,28 @@
                         </div>
                         <p class="text-xs text-gray-400">{{ $user->email }} · {{ $user->tenants_count }} workspace{{ $user->tenants_count !== 1 ? 's' : '' }}</p>
                     </div>
-                    <form method="POST" action="{{ route('admin.users.toggle-superadmin', $user->id) }}">
-                        @csrf
-                        <button type="submit"
-                            class="text-xs px-3 py-1 border rounded-full transition-colors
-                                {{ $user->is_super_admin
-                                    ? 'border-red-200 text-red-600 hover:bg-red-50'
-                                    : 'border-gray-200 text-gray-500 hover:bg-gray-50' }}">
-                            {{ $user->is_super_admin ? 'Revoke Super Admin' : 'Make Super Admin' }}
-                        </button>
-                    </form>
+                    <div class="flex items-center gap-2">
+                        @unless($user->is_super_admin)
+                        <form method="POST" action="{{ route('admin.impersonate', $user->id) }}" class="inline">
+                            @csrf
+                            <button type="submit"
+                                    class="inline-flex items-center px-3 py-1 text-xs font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-full hover:bg-blue-100 transition-colors"
+                                    onclick="return confirm('Login as {{ addslashes($user->name) }}?')">
+                                👤 Login as User
+                            </button>
+                        </form>
+                        @endunless
+                        <form method="POST" action="{{ route('admin.users.toggle-superadmin', $user->id) }}">
+                            @csrf
+                            <button type="submit"
+                                class="text-xs px-3 py-1 border rounded-full transition-colors
+                                    {{ $user->is_super_admin
+                                        ? 'border-red-200 text-red-600 hover:bg-red-50'
+                                        : 'border-gray-200 text-gray-500 hover:bg-gray-50' }}">
+                                {{ $user->is_super_admin ? 'Revoke Super Admin' : 'Make Super Admin' }}
+                            </button>
+                        </form>
+                    </div>
                 </div>
                 @endforeach
             </div>
