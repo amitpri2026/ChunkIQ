@@ -17,6 +17,7 @@
             --border:    #e2e8f0;
         }
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-padding-top: 64px; }
         body { font-family: 'Segoe UI', system-ui, sans-serif; color: var(--text); background: #fff; }
         a { color: inherit; text-decoration: none; }
 
