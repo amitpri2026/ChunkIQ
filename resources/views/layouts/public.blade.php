@@ -26,9 +26,11 @@
             display: flex; align-items: center; justify-content: space-between;
             padding: 0 5%; height: 64px;
             border-bottom: 1px solid var(--border);
-            position: sticky; top: 0; background: rgba(255,255,255,0.96);
+            position: fixed; top: 0; left: 0; right: 0;
+            background: rgba(255,255,255,0.96);
             backdrop-filter: blur(8px); z-index: 100;
         }
+        body { padding-top: 64px; }
         .nav-logo { font-size: 1.15rem; font-weight: 700; color: var(--navy); letter-spacing: -0.5px; }
         .nav-logo span { color: var(--blue); }
         .nav-links { display: flex; gap: 1.75rem; align-items: center; }
@@ -133,6 +135,7 @@
             display: none; flex-direction: column; gap: 0;
             background: #fff; border-bottom: 1px solid var(--border);
             padding: 0.75rem 5% 1rem;
+            position: fixed; top: 64px; left: 0; right: 0; z-index: 99;
         }
         .mobile-menu.open { display: flex; }
         .mobile-menu a, .mobile-menu button {
