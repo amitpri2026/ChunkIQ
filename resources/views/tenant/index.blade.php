@@ -10,7 +10,13 @@
             <div class="bg-gradient-to-r from-blue-700 to-blue-500 rounded-xl p-6 text-white shadow">
                 <p class="text-sm font-semibold uppercase tracking-widest text-blue-200 mb-1">Welcome back</p>
                 <h1 class="text-2xl font-bold">{{ Auth::user()->name }}</h1>
-                <p class="text-blue-200 mt-1 text-sm">Select a workspace to continue or create a new one.</p>
+                <p class="text-blue-200 mt-1 text-sm">
+                    @if(Auth::user()->is_super_admin)
+                        Select a workspace to continue or create a new one.
+                    @else
+                        Select a workspace to continue, or ask your admin for an invite link.
+                    @endif
+                </p>
             </div>
 
             @if(session('success'))
@@ -60,19 +66,21 @@
                     </svg>
                 </div>
                 <h3 class="font-bold text-gray-700 mb-1">No workspaces yet</h3>
-                <p class="text-sm text-gray-400 mb-5">Create your first workspace or ask someone to send you an invite link.</p>
-                @if(!$ownsOne)
+                @if(Auth::user()->is_super_admin)
+                <p class="text-sm text-gray-400 mb-5">Create your first workspace to get started.</p>
                 <a href="{{ route('tenants.create') }}"
                    class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors">
                     Create a workspace
                 </a>
+                @else
+                <p class="text-sm text-gray-400">You haven't been added to any workspace yet. Ask your admin for an invite link.</p>
                 @endif
             </div>
             @endif
 
             <!-- Actions -->
             <div class="flex gap-3">
-                @if(!$ownsOne)
+                @if(Auth::user()->is_super_admin)
                 <a href="{{ route('tenants.create') }}"
                    class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors">
                     + New Workspace

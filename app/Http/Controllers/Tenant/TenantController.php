@@ -27,26 +27,28 @@ class TenantController extends Controller
     // Create tenant form
     public function create(): View
     {
+        abort_unless(auth()->user()->is_super_admin, 403, 'Only super admins can create workspaces.');
         return view('tenant.create');
     }
 
     // Store new tenant
     public function store(Request $request): RedirectResponse
     {
-        if ($request->user()->ownedTenants()->exists()) {
-            return redirect()->route('dashboard')
-                ->withErrors(['tenant' => 'You can only own one workspace.']);
-        }
+        abort_unless($request->user()->is_super_admin, 403, 'Only super admins can create workspaces.');
 
         $data = $request->validate([
             'name' => ['required', 'string', 'max:100'],
             'slug' => [
                 'required', 'string', 'max:63',
                 'regex:/^[a-z0-9\-]+$/',
-                'not_in:' . implode(',', Tenant::RESERVED_SLUGS),
+                \Illuminate\Validation\Rule::notIn(Tenant::RESERVED_SLUGS),
                 'unique:tenants,slug',
             ],
             'description' => ['nullable', 'string', 'max:500'],
+        ], [
+            'slug.not_in'  => 'This slug is not available. Please choose a unique identifier.',
+            'slug.unique'  => 'This slug is already taken. Please choose another.',
+            'slug.regex'   => 'Only lowercase letters, numbers and hyphens are allowed.',
         ]);
 
         $tenant = Tenant::create([

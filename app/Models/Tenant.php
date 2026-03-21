@@ -13,10 +13,28 @@ class Tenant extends Model
 
     // Reserved slugs that cannot be used as tenant subdomains
     public const RESERVED_SLUGS = [
-        'www', 'api', 'app', 'admin', 'mail', 'smtp', 'ftp',
-        'cdn', 'static', 'assets', 'login', 'register', 'auth',
-        'dashboard', 'portal', 'help', 'support', 'billing',
-        'status', 'dev', 'staging', 'test', 'demo',
+        // Infrastructure
+        'www', 'api', 'app', 'admin', 'mail', 'smtp', 'ftp', 'ssh',
+        'cdn', 'static', 'assets', 'media', 'files', 'uploads',
+        // Auth & portal
+        'login', 'logout', 'register', 'auth', 'oauth', 'sso',
+        'dashboard', 'portal', 'account', 'profile', 'settings',
+        // Product
+        'help', 'support', 'billing', 'pricing', 'docs', 'documentation',
+        'status', 'health', 'monitor', 'metrics',
+        // Environments
+        'dev', 'development', 'staging', 'test', 'testing', 'demo', 'sandbox', 'prod', 'production',
+        // Generic / reserved words users might try
+        'tenant', 'tenants', 'workspace', 'workspaces', 'server', 'servers',
+        'team', 'teams', 'org', 'organization', 'organisations', 'organizations', 'company',
+        'data', 'database', 'db', 'store', 'storage',
+        'user', 'users', 'member', 'members', 'guest', 'guests', 'staff',
+        'public', 'private', 'internal', 'external', 'global', 'default',
+        'system', 'systems', 'platform', 'core', 'root', 'base',
+        'null', 'undefined', 'none', 'test1', 'test2', 'sample', 'example',
+        'chunkiq', 'chunk', 'iq', 'microsoft', 'azure', 'sharepoint',
+        'new', 'create', 'edit', 'delete', 'update', 'manage',
+        'secure', 'security', 'ssl', 'tls', 'vpn',
     ];
 
     public function owner(): BelongsTo
