@@ -50,16 +50,6 @@ class AzureFunctionTrigger
                 'index_name' => $tenant->getConfig('ai_search_index_name') ?: 'chunkiq-documents',
             ],
 
-            // User's Azure OpenAI service — embeddings and chat
-            'openai_config' => [
-                'endpoint'             => $tenant->getConfig('openai_endpoint'),
-                'api_key'              => $tenant->getConfig('openai_key'),
-                'embedding_deployment' => $tenant->getConfig('openai_embedding_deployment') ?: 'text-embedding-3-small',
-                'chat_deployment'      => $tenant->getConfig('openai_chat_deployment') ?: 'gpt-4o-mini',
-                'api_version'          => '2024-02-01',
-                'dimensions'           => 1536,
-            ],
-
             'callback_url'   => route('api.jobs.callback', $job->callback_token),
             'callback_token' => $job->callback_token,
         ];

@@ -26,11 +26,6 @@ class TenantConfigController extends Controller
         'ai_search_endpoint'          => 'AI Search Endpoint URL',
         'ai_search_key'               => 'AI Search Admin Key',
         'ai_search_index_name'        => 'Index Name',
-        // Azure OpenAI
-        'openai_endpoint'             => 'Azure OpenAI Endpoint URL',
-        'openai_key'                  => 'Azure OpenAI API Key',
-        'openai_embedding_deployment' => 'Embedding Deployment Name',
-        'openai_chat_deployment'      => 'Chat Deployment Name',
     ];
 
     public const STEPS = [
@@ -81,21 +76,6 @@ class TenantConfigController extends Controller
                 'Once provisioned, copy the Url from the Overview page (e.g. https://<name>.search.windows.net).',
                 'Go to Settings → Keys → copy the Primary admin key.',
                 'Choose an index name (e.g. chunkiq-documents) — ChunkIQ will create it automatically.',
-            ],
-        ],
-        4 => [
-            'title'       => 'Azure OpenAI',
-            'description' => 'Your Azure OpenAI resource generates vector embeddings for semantic search and powers the ChunkIQ chat interface. Two model deployments are required: one for embeddings, one for chat.',
-            'keys'        => ['openai_endpoint', 'openai_key', 'openai_embedding_deployment', 'openai_chat_deployment'],
-            'permissions' => [],
-            'setup_steps' => [
-                'Open Azure Portal → Azure OpenAI → Create (requires Azure OpenAI access approval).',
-                'Use the same region as your AI Search service for best performance.',
-                'Once provisioned, open Azure OpenAI Studio → Deployments → Create new deployment.',
-                'Deploy text-embedding-3-small (or your preferred embedding model) — note the deployment name.',
-                'Deploy gpt-4o-mini (or your preferred chat model) — note the deployment name.',
-                'Back in the resource, go to Keys and Endpoint → copy Key 1 and the Endpoint URL.',
-                'Enter all four values below.',
             ],
         ],
     ];
