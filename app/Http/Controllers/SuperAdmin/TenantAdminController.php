@@ -4,6 +4,7 @@ namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
 use App\Models\PipelineJob;
+use App\Models\SubscriptionRequest;
 use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -50,6 +51,56 @@ class TenantAdminController extends Controller
         }
 
         return back()->with('success', 'Job cancelled.');
+    }
+
+    public function updatePlan(Request $request, Tenant $tenant): RedirectResponse
+    {
+        $data = $request->validate([
+            'plan'                     => ['required', 'in:free,starter,enterprise'],
+            'connector_limit_override' => ['nullable', 'integer', 'min:0'],
+            'document_limit_override'  => ['nullable', 'integer', 'min:0'],
+            'documents_processed'      => ['nullable', 'integer', 'min:0'],
+        ]);
+
+        $tenant->update([
+            'plan'                     => $data['plan'],
+            'connector_limit_override' => $data['connector_limit_override'] ?: null,
+            'document_limit_override'  => $data['document_limit_override'] ?: null,
+            'documents_processed'      => $data['documents_processed'] ?? $tenant->documents_processed,
+        ]);
+
+        return back()->with('success', 'Plan updated to ' . $tenant->fresh()->planLabel() . '.');
+    }
+
+    public function subscriptions(): View
+    {
+        $requests = SubscriptionRequest::with(['user', 'tenant'])
+            ->latest()
+            ->paginate(25);
+
+        return view('admin.subscriptions.index', compact('requests'));
+    }
+
+    public function subscriptionShow(SubscriptionRequest $subscription): View
+    {
+        $subscription->load(['user', 'tenant']);
+
+        return view('admin.subscriptions.show', compact('subscription'));
+    }
+
+    public function subscriptionUpdateStatus(Request $request, SubscriptionRequest $subscription): RedirectResponse
+    {
+        $request->validate([
+            'status'    => ['required', 'in:pending,contacted,converted,rejected'],
+            'tenant_id' => ['nullable', 'exists:tenants,id'],
+        ]);
+
+        $subscription->update([
+            'status'    => $request->status,
+            'tenant_id' => $request->tenant_id ?: $subscription->tenant_id,
+        ]);
+
+        return back()->with('success', 'Request status updated.');
     }
 
     public function toggleSuperAdmin(Request $request, User $user): RedirectResponse

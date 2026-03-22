@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DemoController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperDashboard;
 use App\Http\Controllers\SuperAdmin\SystemConfigController;
@@ -68,6 +69,11 @@ Route::domain('{tenantSlug}.' . $appHost)
             Route::delete('/jobs/{job}',                     [PipelineJobController::class, 'destroy'])->name('tenant.jobs.destroy');
         });
     });
+
+// ─── Subscription / plan requests (public) ───────────────────────────────────
+Route::get('/subscribe',       [SubscriptionController::class, 'show'])->name('subscribe.show');
+Route::post('/subscribe',      [SubscriptionController::class, 'store'])->name('subscribe.store');
+Route::get('/subscribe/thanks', fn() => view('subscribe.thanks'))->name('subscribe.thanks');
 
 // ─── Public marketing site ────────────────────────────────────────────────────
 Route::get('/', fn() => view('welcome'));
@@ -138,6 +144,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/users/{user}/toggle-superadmin',     [TenantAdminController::class, 'toggleSuperAdmin'])->name('users.toggle-superadmin');
 
         Route::post('/users/{user}/impersonate', [\App\Http\Controllers\SuperAdmin\ImpersonationController::class, 'impersonate'])->name('impersonate');
+
+        // Plan management
+        Route::put('/tenants/{tenant}/plan', [TenantAdminController::class, 'updatePlan'])->name('tenants.plan.update');
+
+        // Subscription requests
+        Route::get('/subscriptions',                                    [TenantAdminController::class, 'subscriptions'])->name('subscriptions.index');
+        Route::get('/subscriptions/{subscription}',                     [TenantAdminController::class, 'subscriptionShow'])->name('subscriptions.show');
+        Route::patch('/subscriptions/{subscription}/status',            [TenantAdminController::class, 'subscriptionUpdateStatus'])->name('subscriptions.status');
 
         Route::prefix('tickets')->name('tickets.')->group(function () {
             Route::get('/',                      [\App\Http\Controllers\SuperAdmin\TicketAdminController::class, 'index'])->name('index');

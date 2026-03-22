@@ -61,6 +61,12 @@ class ConnectorController extends Controller
             : Connector::DEFAULT_FILE_TYPES;
 
         $tenant = $this->manager->get();
+
+        if ($tenant->atConnectorLimit()) {
+            $limit = $tenant->connectorLimit();
+            return back()->withErrors(['limit' => "Your {$tenant->planLabel()} plan allows a maximum of {$limit} connector(s). Please upgrade to add more."])->withInput();
+        }
+
         $tenant->connectors()->create([
             'type'     => $type,
             'name'     => $request->name,

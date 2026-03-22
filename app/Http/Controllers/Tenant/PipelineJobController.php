@@ -92,6 +92,15 @@ class PipelineJobController extends Controller
             return back()->withErrors(['run' => 'Job is already running.']);
         }
 
+        if ($tenant->atDocumentLimit()) {
+            $limit = number_format($tenant->documentLimit());
+            $msg   = "Document limit reached ({$limit} docs on {$tenant->planLabel()} plan). Please upgrade to run more jobs.";
+            if ($request->wantsJson()) {
+                return response()->json(['error' => $msg], 422);
+            }
+            return back()->withErrors(['run' => $msg]);
+        }
+
         // Refresh callback token on each run
         $job->update(['callback_token' => PipelineJob::generateCallbackToken()]);
         $job->refresh();

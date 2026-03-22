@@ -23,7 +23,7 @@
             @endif
 
             <!-- Tenant info -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
                     <p class="text-xs text-gray-400 mb-1">Subdomain</p>
                     <p class="font-mono font-semibold text-gray-800 text-sm">{{ $tenant->slug }}.chunkiq.com</p>
@@ -34,9 +34,86 @@
                     <p class="text-xs text-gray-400">{{ $tenant->owner->email }}</p>
                 </div>
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-                    <p class="text-xs text-gray-400 mb-1">Created</p>
-                    <p class="font-semibold text-gray-800 text-sm">{{ $tenant->created_at->format('M j, Y') }}</p>
+                    <p class="text-xs text-gray-400 mb-1">Plan</p>
+                    @php $planColor = $tenant->planColor(); @endphp
+                    <span class="inline-flex items-center text-xs font-bold px-2.5 py-1 rounded-full
+                        bg-{{ $planColor }}-100 text-{{ $planColor }}-700">
+                        {{ $tenant->planLabel() }}
+                    </span>
                 </div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+                    <p class="text-xs text-gray-400 mb-1">Documents processed</p>
+                    <p class="font-semibold text-gray-800 text-sm">
+                        {{ number_format($tenant->documents_processed) }}
+                        @if($tenant->documentLimit() !== null)
+                            / {{ number_format($tenant->documentLimit()) }}
+                        @else
+                            <span class="text-xs text-gray-400">unlimited</span>
+                        @endif
+                    </p>
+                </div>
+            </div>
+
+            <!-- Plan Management -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <h3 class="font-bold text-gray-700 mb-4">Plan &amp; Limits</h3>
+                <form method="POST" action="{{ route('admin.tenants.plan.update', $tenant->id) }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    @csrf
+                    @method('PUT')
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Plan</label>
+                        <select name="plan" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                            @foreach(\App\Models\Tenant::PLANS as $key => $meta)
+                            <option value="{{ $key }}" @selected($tenant->plan === $key)>
+                                {{ $meta['name'] }}
+                                @if($meta['price'] === 0) (Free)
+                                @elseif($meta['price'] !== null) (${{ $meta['price'] }}/mo)
+                                @else (Custom)
+                                @endif
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Connector limit override</label>
+                        <input type="number" name="connector_limit_override" min="0"
+                               value="{{ $tenant->connector_limit_override }}"
+                               placeholder="Leave blank = plan default"
+                               class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                        <p class="text-xs text-gray-400 mt-0.5">Plan default: {{ $tenant->connectorLimit() ?? '∞' }}</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Document limit override</label>
+                        <input type="number" name="document_limit_override" min="0"
+                               value="{{ $tenant->document_limit_override }}"
+                               placeholder="Leave blank = plan default"
+                               class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                        <p class="text-xs text-gray-400 mt-0.5">Plan default: {{ $tenant->documentLimit() !== null ? number_format($tenant->documentLimit()) : '∞' }}</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Documents processed (manual)</label>
+                        <input type="number" name="documents_processed" min="0"
+                               value="{{ $tenant->documents_processed }}"
+                               class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                        <p class="text-xs text-gray-400 mt-0.5">Used against document limit</p>
+                    </div>
+
+                    <div class="sm:col-span-2 lg:col-span-4 flex items-center gap-4">
+                        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 transition-colors">
+                            Update plan &amp; limits
+                        </button>
+                        <div class="text-xs text-gray-400">
+                            Scheduled jobs:
+                            <span class="{{ $tenant->allowsScheduledJobs() ? 'text-green-600 font-semibold' : 'text-gray-400' }}">
+                                {{ $tenant->allowsScheduledJobs() ? '✓ Enabled' : '— Disabled' }}
+                            </span>
+                        </div>
+                    </div>
+                </form>
             </div>
 
             <!-- Members -->

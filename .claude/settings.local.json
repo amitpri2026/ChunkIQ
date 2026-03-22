@@ -35,7 +35,11 @@
       "Bash(php artisan:*)",
       "Bash(grep -E \"\\\\.\\(php|tsx|ts\\)$\")",
       "Bash(grep -E \"\\(README|readme|\\\\.md|\\\\.txt\\)$\")",
-      "Bash(xargs grep:*)"
+      "Bash(xargs grep:*)",
+      "Bash(php -l app/Http/Controllers/Tenant/ConnectorController.php)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ]
   }
 }

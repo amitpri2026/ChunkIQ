@@ -9,7 +9,90 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Tenant extends Model
 {
-    protected $fillable = ['name', 'slug', 'owner_id', 'description'];
+    protected $fillable = [
+        'name', 'slug', 'owner_id', 'description',
+        'plan', 'documents_processed', 'connector_limit_override', 'document_limit_override',
+    ];
+
+    protected $casts = [
+        'documents_processed'     => 'integer',
+        'connector_limit_override' => 'integer',
+        'document_limit_override'  => 'integer',
+    ];
+
+    // ── Plan definitions ──────────────────────────────────────────────────────
+    public const PLANS = [
+        'free' => [
+            'name'           => 'Free',
+            'price'          => 0,
+            'connectors'     => 1,
+            'documents'      => 100,
+            'scheduled_jobs' => false,
+            'color'          => 'gray',
+        ],
+        'starter' => [
+            'name'           => 'Starter',
+            'price'          => 299,
+            'connectors'     => null,   // unlimited
+            'documents'      => 50000,
+            'scheduled_jobs' => true,
+            'color'          => 'blue',
+        ],
+        'enterprise' => [
+            'name'           => 'Enterprise',
+            'price'          => null,   // custom
+            'connectors'     => null,   // unlimited
+            'documents'      => null,   // unlimited
+            'scheduled_jobs' => true,
+            'color'          => 'purple',
+        ],
+    ];
+
+    public function planLabel(): string
+    {
+        return self::PLANS[$this->plan]['name'] ?? ucfirst($this->plan);
+    }
+
+    public function planColor(): string
+    {
+        return self::PLANS[$this->plan]['color'] ?? 'gray';
+    }
+
+    /** Effective connector limit (override takes precedence over plan default). */
+    public function connectorLimit(): ?int
+    {
+        if ($this->connector_limit_override !== null) {
+            return $this->connector_limit_override;
+        }
+        return self::PLANS[$this->plan]['connectors'] ?? null;
+    }
+
+    /** Effective document limit (override takes precedence over plan default). */
+    public function documentLimit(): ?int
+    {
+        if ($this->document_limit_override !== null) {
+            return $this->document_limit_override;
+        }
+        $limit = self::PLANS[$this->plan]['documents'] ?? null;
+        return $limit;
+    }
+
+    public function allowsScheduledJobs(): bool
+    {
+        return self::PLANS[$this->plan]['scheduled_jobs'] ?? false;
+    }
+
+    public function atConnectorLimit(): bool
+    {
+        $limit = $this->connectorLimit();
+        return $limit !== null && $this->connectors()->count() >= $limit;
+    }
+
+    public function atDocumentLimit(): bool
+    {
+        $limit = $this->documentLimit();
+        return $limit !== null && $this->documents_processed >= $limit;
+    }
 
     // Reserved slugs that cannot be used as tenant subdomains
     public const RESERVED_SLUGS = [
