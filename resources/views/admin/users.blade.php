@@ -9,14 +9,14 @@
         </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-4">
 
             @if(session('success'))
                 <div class="bg-green-50 border border-green-200 text-green-700 rounded-lg px-4 py-3 text-sm">{{ session('success') }}</div>
             @endif
 
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 divide-y divide-gray-100">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 divide-y divide-gray-200">
                 @foreach($users as $user)
                 <div class="flex items-center justify-between p-4">
                     <div>

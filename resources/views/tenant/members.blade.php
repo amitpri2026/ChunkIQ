@@ -1,15 +1,26 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ $tenant->name }} — Members
-            </h2>
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="font-bold text-gray-900 leading-tight">Members</h2>
+                    <p class="text-xs text-gray-500">{{ $tenant->name }}</p>
+                </div>
+            </div>
             <a href="{{ route('tenant.dashboard', ['tenantSlug' => $tenant->slug]) }}"
-               class="text-sm text-gray-400 hover:text-gray-600">← Dashboard</a>
+               class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 font-medium">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                Dashboard
+            </a>
         </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             @if(session('success'))

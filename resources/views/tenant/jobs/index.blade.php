@@ -1,18 +1,33 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $tenant->name }} — Pipeline Jobs</h2>
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="font-bold text-gray-900 leading-tight">Pipeline Jobs</h2>
+                    <p class="text-xs text-gray-500">{{ $tenant->name }}</p>
+                </div>
+            </div>
             <div class="flex items-center gap-3">
                 <a href="{{ route('tenant.jobs.create', ['tenantSlug' => $tenant->slug]) }}"
-                   class="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors">
-                    + New Job
+                   class="inline-flex items-center gap-1.5 px-4 py-2 bg-[#0f62fe] text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                    New Job
                 </a>
-                <a href="{{ route('tenant.dashboard', ['tenantSlug' => $tenant->slug]) }}" class="text-sm text-gray-400 hover:text-gray-600">← Dashboard</a>
+                <a href="{{ route('tenant.dashboard', ['tenantSlug' => $tenant->slug]) }}"
+                   class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 font-medium">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    Dashboard
+                </a>
             </div>
         </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 space-y-4">
 
             @if(session('success'))
@@ -24,7 +39,7 @@
                 <p class="text-gray-400 text-sm">No jobs yet. Create one to start ingesting or processing data.</p>
             </div>
             @else
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 divide-y divide-gray-100">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 divide-y divide-gray-200">
                 @foreach($jobs as $job)
                 @php $color = $job->getStatusBadgeColor(); @endphp
                 <div class="flex items-center justify-between p-4">

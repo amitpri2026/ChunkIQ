@@ -9,9 +9,9 @@
         </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 divide-y divide-gray-100">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 divide-y divide-gray-200">
                 @foreach($tenants as $tenant)
                 <div class="flex items-center justify-between p-4">
                     <div>

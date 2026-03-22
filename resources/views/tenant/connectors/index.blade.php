@@ -1,12 +1,26 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $tenant->name }} — Connectors</h2>
-            <a href="{{ route('tenant.dashboard', ['tenantSlug' => $tenant->slug]) }}" class="text-sm text-gray-400 hover:text-gray-600">← Dashboard</a>
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-teal-100 flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="font-bold text-gray-900 leading-tight">Connectors</h2>
+                    <p class="text-xs text-gray-500">{{ $tenant->name }}</p>
+                </div>
+            </div>
+            <a href="{{ route('tenant.dashboard', ['tenantSlug' => $tenant->slug]) }}"
+               class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 font-medium">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                Dashboard
+            </a>
         </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             @if(session('success'))
@@ -28,7 +42,7 @@
                 <p class="text-gray-400 text-sm">No connectors yet. Add one above to start ingesting data.</p>
             </div>
             @else
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 divide-y divide-gray-100">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 divide-y divide-gray-200">
                 @foreach($connectors as $connector)
                 <div class="flex items-center justify-between p-4">
                     <div class="flex items-center gap-4">

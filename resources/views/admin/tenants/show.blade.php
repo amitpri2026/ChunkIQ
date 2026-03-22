@@ -9,7 +9,7 @@
         </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             @if(session('success'))
@@ -36,7 +36,7 @@
             <!-- Members -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                 <h3 class="font-bold text-gray-700 mb-3">Members ({{ $tenant->users->count() }})</h3>
-                <div class="divide-y divide-gray-100">
+                <div class="divide-y divide-gray-200">
                     @foreach($tenant->users as $user)
                     <div class="flex items-center justify-between py-2">
                         <div>
@@ -58,7 +58,7 @@
                 @if($tenant->connectors->isEmpty())
                     <p class="text-sm text-gray-400">None configured.</p>
                 @else
-                <div class="divide-y divide-gray-100">
+                <div class="divide-y divide-gray-200">
                     @foreach($tenant->connectors as $connector)
                     <div class="flex items-center justify-between py-2">
                         <p class="text-sm font-semibold text-gray-800">{{ $connector->name }}</p>
@@ -75,7 +75,7 @@
                 @if($jobs->isEmpty())
                     <p class="text-sm text-gray-400">No jobs yet.</p>
                 @else
-                <div class="divide-y divide-gray-100">
+                <div class="divide-y divide-gray-200">
                     @foreach($jobs as $job)
                     @php $color = $job->getStatusBadgeColor(); @endphp
                     <div class="flex items-center justify-between py-3">

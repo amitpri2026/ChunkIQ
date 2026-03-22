@@ -32,7 +32,10 @@
       "Bash(curl:*)",
       "WebFetch(domain:chunkiq.com)",
       "WebFetch(domain:myserver.chunkiq.com)",
-      "Bash(php artisan:*)"
+      "Bash(php artisan:*)",
+      "Bash(grep -E \"\\\\.\\(php|tsx|ts\\)$\")",
+      "Bash(grep -E \"\\(README|readme|\\\\.md|\\\\.txt\\)$\")",
+      "Bash(xargs grep:*)"
     ]
   }
 }

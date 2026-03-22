@@ -1,18 +1,23 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <div>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $tenant->name }}</h2>
-                <p class="text-xs text-gray-400 mt-0.5">{{ $tenant->slug }}.chunkiq.com</p>
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-[#0f62fe] flex items-center justify-center shrink-0">
+                    <span class="font-black text-white text-sm uppercase">{{ substr($tenant->name, 0, 2) }}</span>
+                </div>
+                <div>
+                    <h2 class="font-bold text-gray-900 leading-tight">{{ $tenant->name }}</h2>
+                    <p class="text-xs text-gray-500">{{ $tenant->slug }}.chunkiq.com</p>
+                </div>
             </div>
-            <span class="text-xs font-semibold px-2.5 py-1 rounded-full
+            <span class="text-xs font-bold px-3 py-1 rounded-full
                 {{ $role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-600' }}">
                 {{ ucfirst($role) }}
             </span>
         </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             @if(session('success'))
