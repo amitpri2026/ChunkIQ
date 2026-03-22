@@ -52,6 +52,7 @@ Route::domain('{tenantSlug}.' . $appHost)
             Route::get('/connectors',                        [ConnectorController::class, 'index'])->name('tenant.connectors.index');
             Route::get('/connectors/create',                 [ConnectorController::class, 'create'])->name('tenant.connectors.create');
             Route::post('/connectors',                       [ConnectorController::class, 'store'])->name('tenant.connectors.store');
+            Route::post('/connectors/test',                  [ConnectorController::class, 'testConnector'])->name('tenant.connectors.test');
             Route::get('/connectors/{connector}/edit',       [ConnectorController::class, 'edit'])->name('tenant.connectors.edit');
             Route::patch('/connectors/{connector}',          [ConnectorController::class, 'update'])->name('tenant.connectors.update');
             Route::delete('/connectors/{connector}',         [ConnectorController::class, 'destroy'])->name('tenant.connectors.destroy');
