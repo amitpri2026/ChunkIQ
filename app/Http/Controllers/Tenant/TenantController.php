@@ -94,6 +94,19 @@ class TenantController extends Controller
         $tenant = $this->manager->get();
         $role   = $tenant->userRole($request->user());
 
-        return view('tenant.dashboard', compact('tenant', 'role'));
+        // Status data for Admin Actions cards
+        $configSteps = 0;
+        if ($tenant->getConfig('azure_tenant_id') && $tenant->getConfig('azure_client_id') && $tenant->getConfig('azure_client_secret')) $configSteps++;
+        if ($tenant->getConfig('adls_account_name') && $tenant->getConfig('adls_key')) $configSteps++;
+        if ($tenant->getConfig('ai_search_endpoint') && $tenant->getConfig('ai_search_key')) $configSteps++;
+
+        $memberCount    = $tenant->users()->count();
+        $connectorCount = $tenant->connectors()->count();
+        $lastJob        = $tenant->pipelineJobs()->latest()->first();
+
+        return view('tenant.dashboard', compact(
+            'tenant', 'role',
+            'configSteps', 'memberCount', 'connectorCount', 'lastJob'
+        ));
     }
 }
