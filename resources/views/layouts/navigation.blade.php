@@ -4,7 +4,7 @@
 
             {{-- Left: Logo + nav links --}}
             <div class="flex items-center gap-6">
-                <a href="{{ route('dashboard') }}"
+                <a href="{{ config('app.url') }}"
                    class="text-white font-black text-lg tracking-tight shrink-0 select-none">
                     Chunk<span class="text-[#4d9fff]">IQ</span>
                 </a>
