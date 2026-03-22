@@ -65,9 +65,11 @@ class PipelineJobController extends Controller
             ->with('success', 'Job created. Click "Run" to trigger it.');
     }
 
-    public function show(PipelineJob $job): View
+    public function show(Request $request): View
     {
+        $id     = (int) $request->route('job');
         $tenant = $this->manager->get();
+        $job    = PipelineJob::findOrFail($id);
         abort_if($job->tenant_id !== $tenant->id, 403);
 
         $job->load(['connector', 'triggeredBy']);
@@ -75,9 +77,11 @@ class PipelineJobController extends Controller
         return view('tenant.jobs.show', compact('tenant', 'job'));
     }
 
-    public function run(PipelineJob $job): RedirectResponse
+    public function run(Request $request): RedirectResponse
     {
+        $id     = (int) $request->route('job');
         $tenant = $this->manager->get();
+        $job    = PipelineJob::findOrFail($id);
         abort_if($job->tenant_id !== $tenant->id, 403);
 
         if ($job->status === 'running') {
@@ -94,23 +98,27 @@ class PipelineJobController extends Controller
             ->with('success', 'Job triggered.');
     }
 
-    public function cancel(PipelineJob $job): RedirectResponse
+    public function cancel(Request $request): RedirectResponse
     {
+        $id     = (int) $request->route('job');
         $tenant = $this->manager->get();
+        $job    = PipelineJob::findOrFail($id);
         abort_if($job->tenant_id !== $tenant->id, 403);
 
         if (!in_array($job->status, ['pending', 'running'])) {
             return back()->withErrors(['cancel' => 'Cannot cancel a job that is not pending or running.']);
         }
 
-        $job->markFinished('cancelled', 'Cancelled by ' . request()->user()->name . '.');
+        $job->markFinished('cancelled', 'Cancelled by ' . $request->user()->name . '.');
 
         return back()->with('success', 'Job cancelled.');
     }
 
-    public function destroy(PipelineJob $job): RedirectResponse
+    public function destroy(Request $request): RedirectResponse
     {
+        $id     = (int) $request->route('job');
         $tenant = $this->manager->get();
+        $job    = PipelineJob::findOrFail($id);
         abort_if($job->tenant_id !== $tenant->id, 403);
 
         $job->delete();

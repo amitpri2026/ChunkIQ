@@ -21,11 +21,13 @@ class TenantMemberController extends Controller
         return view('tenant.members', compact('tenant', 'members'));
     }
 
-    public function updateRole(Request $request, User $user): RedirectResponse
+    public function updateRole(Request $request): RedirectResponse
     {
+        $id     = (int) $request->route('user');
         $request->validate(['role' => ['required', 'in:admin,user']]);
 
         $tenant = $this->manager->get();
+        $user   = User::findOrFail($id);
 
         // Prevent demoting the last admin
         if ($request->role === 'user' && $tenant->owner_id === $user->id) {
@@ -37,9 +39,11 @@ class TenantMemberController extends Controller
         return back()->with('success', $user->name . ' is now ' . $request->role . '.');
     }
 
-    public function remove(Request $request, User $user): RedirectResponse
+    public function remove(Request $request): RedirectResponse
     {
+        $id     = (int) $request->route('user');
         $tenant = $this->manager->get();
+        $user   = User::findOrFail($id);
 
         if ($tenant->owner_id === $user->id) {
             return back()->withErrors(['remove' => 'The workspace owner cannot be removed.']);
