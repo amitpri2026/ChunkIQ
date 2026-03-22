@@ -5,7 +5,13 @@
                 <span class="text-xs font-bold px-2.5 py-1 bg-red-100 text-red-700 rounded-full uppercase tracking-wide">Super Admin</span>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $tenant->name }}</h2>
             </div>
-            <a href="{{ route('admin.tenants') }}" class="text-sm text-gray-400 hover:text-gray-600">← Workspaces</a>
+            <div class="flex items-center gap-3">
+                <a href="{{ route('tenants.open', $tenant->id) }}"
+                   class="inline-flex items-center px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 rounded-full hover:bg-indigo-700 transition-colors">
+                    Enter Workspace →
+                </a>
+                <a href="{{ route('admin.tenants') }}" class="text-sm text-gray-400 hover:text-gray-600">← Workspaces</a>
+            </div>
         </div>
     </x-slot>
 

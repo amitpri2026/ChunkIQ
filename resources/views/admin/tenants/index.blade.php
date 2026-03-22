@@ -24,8 +24,14 @@
                             · {{ $tenant->pipeline_jobs_count }} job{{ $tenant->pipeline_jobs_count !== 1 ? 's' : '' }}
                         </p>
                     </div>
-                    <a href="{{ route('admin.tenants.show', $tenant->id) }}"
-                       class="text-xs text-blue-600 hover:text-blue-800 font-semibold">View →</a>
+                    <div class="flex items-center gap-3">
+                        <a href="{{ route('tenants.open', $tenant->id) }}"
+                           class="text-xs font-semibold text-white bg-indigo-600 px-3 py-1 rounded-full hover:bg-indigo-700 transition-colors">
+                            Enter →
+                        </a>
+                        <a href="{{ route('admin.tenants.show', $tenant->id) }}"
+                           class="text-xs text-blue-600 hover:text-blue-800 font-semibold">Details →</a>
+                    </div>
                 </div>
                 @endforeach
             </div>

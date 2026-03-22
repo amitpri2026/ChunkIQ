@@ -19,7 +19,7 @@ class RequireTenantMember
             abort(403, 'No tenant context.');
         }
 
-        if (!$tenant->hasUser($request->user())) {
+        if (!$request->user()?->is_super_admin && !$tenant->hasUser($request->user())) {
             return response()->view('errors.not-tenant-member', ['tenant' => $tenant], 403);
         }
 

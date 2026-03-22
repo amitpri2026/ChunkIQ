@@ -8,4 +8,12 @@
         </button>
     </form>
 </div>
+@elseif(($superAdminWorkspace ?? null) !== null)
+<div class="bg-indigo-700 text-white text-sm py-2 px-4 flex items-center justify-center gap-4 z-50">
+    <span>🛡️ Super Admin — viewing <strong>{{ $superAdminWorkspace->name }}</strong> as workspace admin</span>
+    <a href="{{ config('app.url') . '/admin/tenants/' . $superAdminWorkspace->id }}"
+       class="underline font-bold hover:text-indigo-200 transition-colors">
+        Exit Workspace
+    </a>
+</div>
 @endif

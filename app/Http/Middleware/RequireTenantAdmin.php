@@ -19,7 +19,7 @@ class RequireTenantAdmin
             abort(403, 'No tenant context.');
         }
 
-        if (!$tenant->isAdmin($request->user())) {
+        if (!$request->user()?->is_super_admin && !$tenant->isAdmin($request->user())) {
             abort(403, 'Admin access required.');
         }
 

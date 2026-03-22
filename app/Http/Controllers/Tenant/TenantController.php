@@ -76,7 +76,8 @@ class TenantController extends Controller
     // Generate a handoff token and redirect user to their tenant subdomain
     public function open(Request $request, Tenant $tenant): RedirectResponse
     {
-        abort_unless($tenant->users()->where('user_id', $request->user()->id)->exists(), 403);
+        $isSuperAdmin = $request->user()->is_super_admin;
+        abort_unless($isSuperAdmin || $tenant->users()->where('user_id', $request->user()->id)->exists(), 403);
 
         $token = Str::random(40);
 
@@ -92,7 +93,7 @@ class TenantController extends Controller
     public function dashboard(Request $request): View
     {
         $tenant = $this->manager->get();
-        $role   = $tenant->userRole($request->user());
+        $role   = $tenant->userRole($request->user()) ?? ($request->user()->is_super_admin ? 'admin' : null);
 
         // Status data for Admin Actions cards
         $configSteps = 0;
