@@ -101,12 +101,14 @@ class TenantController extends Controller
         if ($tenant->getConfig('ai_search_endpoint') && $tenant->getConfig('ai_search_key')) $configSteps++;
 
         $memberCount    = $tenant->users()->count();
+        $adminCount     = $tenant->admins()->count();
         $connectorCount = $tenant->connectors()->count();
+        $jobCount       = $tenant->pipelineJobs()->count();
         $lastJob        = $tenant->pipelineJobs()->latest()->first();
 
         return view('tenant.dashboard', compact(
             'tenant', 'role',
-            'configSteps', 'memberCount', 'connectorCount', 'lastJob'
+            'configSteps', 'memberCount', 'adminCount', 'connectorCount', 'jobCount', 'lastJob'
         ));
     }
 }
