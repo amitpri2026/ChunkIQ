@@ -107,13 +107,30 @@
                             <input type="hidden" name="current_step" value="{{ $currentStep }}">
 
                             <div class="space-y-5">
+                                @php
+                                    $plainTextKeys = ['adls_container', 'adls_enriched_container', 'adls_logs_container', 'adls_account_name', 'ai_search_index_name'];
+                                @endphp
                                 @foreach($step['keys'] as $key)
-                                @php $config = $configs[$key]; @endphp
+                                @php
+                                    $config    = $configs[$key];
+                                    $isPlain   = in_array($key, $plainTextKeys);
+                                @endphp
                                 <div>
                                     <label for="{{ $key }}" class="block text-sm font-semibold text-gray-700 mb-1.5">
                                         {{ $config['label'] }}
                                     </label>
                                     <div class="relative">
+                                        @if($isPlain)
+                                        <input
+                                            type="text"
+                                            id="{{ $key }}"
+                                            name="{{ $key }}"
+                                            value="{{ $config['value'] ?? '' }}"
+                                            placeholder="Enter value…"
+                                            autocomplete="off"
+                                            class="block w-full border-gray-300 rounded-lg shadow-sm focus:ring-[#0f62fe] focus:border-[#0f62fe] text-sm"
+                                        >
+                                        @else
                                         <input
                                             type="password"
                                             id="{{ $key }}"
@@ -130,8 +147,13 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                             </svg>
                                         </button>
+                                        @endif
                                     </div>
-                                    @if($config['masked'])
+                                    @if($isPlain)
+                                        @if(!$config['value'])
+                                            <p class="text-xs text-gray-400 mt-1">Not yet configured</p>
+                                        @endif
+                                    @elseif($config['masked'])
                                         <p class="text-xs text-gray-400 mt-1">
                                             Saved: <span class="font-mono text-gray-500">{{ $config['masked'] }}</span>
                                             &mdash; leave blank to keep

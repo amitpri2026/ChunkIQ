@@ -62,6 +62,7 @@ Route::domain('{tenantSlug}.' . $appHost)
             Route::get('/jobs/create',                       [PipelineJobController::class, 'create'])->name('tenant.jobs.create');
             Route::post('/jobs',                             [PipelineJobController::class, 'store'])->name('tenant.jobs.store');
             Route::get('/jobs/{job}',                        [PipelineJobController::class, 'show'])->name('tenant.jobs.show');
+            Route::get('/jobs/{job}/status',                 [PipelineJobController::class, 'status'])->name('tenant.jobs.status');
             Route::post('/jobs/{job}/run',                   [PipelineJobController::class, 'run'])->name('tenant.jobs.run');
             Route::post('/jobs/{job}/cancel',                [PipelineJobController::class, 'cancel'])->name('tenant.jobs.cancel');
             Route::delete('/jobs/{job}',                     [PipelineJobController::class, 'destroy'])->name('tenant.jobs.destroy');

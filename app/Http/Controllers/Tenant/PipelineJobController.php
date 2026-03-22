@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PipelineJob;
 use App\Services\AzureFunctionTrigger;
 use App\Support\TenantManager;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -77,7 +78,7 @@ class PipelineJobController extends Controller
         return view('tenant.jobs.show', compact('tenant', 'job'));
     }
 
-    public function run(Request $request): RedirectResponse
+    public function run(Request $request): JsonResponse|RedirectResponse
     {
         $id     = (int) $request->route('job');
         $tenant = $this->manager->get();
@@ -85,6 +86,9 @@ class PipelineJobController extends Controller
         abort_if($job->tenant_id !== $tenant->id, 403);
 
         if ($job->status === 'running') {
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Job is already running.'], 422);
+            }
             return back()->withErrors(['run' => 'Job is already running.']);
         }
 
@@ -94,8 +98,29 @@ class PipelineJobController extends Controller
 
         $this->trigger->trigger($job);
 
+        if ($request->wantsJson()) {
+            return response()->json(['ok' => true, 'status' => $job->fresh()->status]);
+        }
+
         return redirect()->route('tenant.jobs.show', ['tenantSlug' => $tenant->slug, 'job' => $job->id])
             ->with('success', 'Job triggered.');
+    }
+
+    public function status(Request $request): JsonResponse
+    {
+        $id     = (int) $request->route('job');
+        $tenant = $this->manager->get();
+        $job    = PipelineJob::findOrFail($id);
+        abort_if($job->tenant_id !== $tenant->id, 403);
+
+        return response()->json([
+            'status'      => $job->status,
+            'label'       => PipelineJob::STATUSES[$job->status]['label'] ?? $job->status,
+            'color'       => $job->getStatusBadgeColor(),
+            'logs'        => $job->logs,
+            'started_at'  => $job->started_at?->format('M j, H:i'),
+            'finished_at' => $job->finished_at?->format('M j, H:i'),
+        ]);
     }
 
     public function cancel(Request $request): RedirectResponse
