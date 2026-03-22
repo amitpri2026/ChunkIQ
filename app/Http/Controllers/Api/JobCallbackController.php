@@ -16,14 +16,15 @@ class JobCallbackController extends Controller
         $job = PipelineJob::where('callback_token', $token)->firstOrFail();
 
         $request->validate([
-            'status' => ['required', 'in:succeeded,failed'],
-            'logs'   => ['nullable', 'string'],
+            'status'  => ['required', 'in:succeeded,failed'],
+            'message' => ['nullable', 'string'],
+            'logs'    => ['nullable', 'string'],
         ]);
 
-        $job->markFinished(
-            $request->status,
-            $request->input('logs', 'Function App reported: ' . $request->status)
-        );
+        $summary = $request->input('message') ?? ('Function App reported: ' . $request->status);
+        $detail  = $request->input('logs', '');
+
+        $job->markFinished($request->status, $summary, $detail);
 
         return response()->json(['ok' => true]);
     }

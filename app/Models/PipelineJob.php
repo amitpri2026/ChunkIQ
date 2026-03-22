@@ -74,11 +74,14 @@ class PipelineJob extends Model
         ]);
     }
 
-    public function markFinished(string $status, string $logLine = ''): void
+    public function markFinished(string $status, string $summary = '', string $detail = ''): void
     {
         $log = $this->logs ?? '';
-        if ($logLine) {
-            $log .= '[' . now()->toDateTimeString() . '] ' . $logLine . "\n";
+        if ($summary) {
+            $log .= '[' . now()->toDateTimeString() . '] ' . $summary . "\n";
+        }
+        if ($detail) {
+            $log .= "\n--- Azure Function Log ---\n" . $detail . "\n";
         }
 
         $this->update([
