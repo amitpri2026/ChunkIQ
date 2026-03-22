@@ -72,9 +72,10 @@ class ConnectorController extends Controller
             ->with('success', 'Connector "' . $request->name . '" added.');
     }
 
-    public function edit(Connector $connector): View
+    public function edit(int $connector): View
     {
-        $tenant = $this->manager->get();
+        $tenant    = $this->manager->get();
+        $connector = Connector::findOrFail($connector);
         abort_if($connector->tenant_id !== $tenant->id, 403);
 
         $settings = $connector->settings_decrypted;
@@ -82,9 +83,10 @@ class ConnectorController extends Controller
         return view('tenant.connectors.edit', compact('tenant', 'connector', 'settings'));
     }
 
-    public function update(Request $request, Connector $connector): RedirectResponse
+    public function update(Request $request, int $connector): RedirectResponse
     {
-        $tenant = $this->manager->get();
+        $tenant    = $this->manager->get();
+        $connector = Connector::findOrFail($connector);
         abort_if($connector->tenant_id !== $tenant->id, 403);
 
         $request->validate(['name' => ['required', 'string', 'max:100']]);
@@ -111,9 +113,10 @@ class ConnectorController extends Controller
             ->with('success', 'Connector updated.');
     }
 
-    public function destroy(Connector $connector): RedirectResponse
+    public function destroy(int $connector): RedirectResponse
     {
-        $tenant = $this->manager->get();
+        $tenant    = $this->manager->get();
+        $connector = Connector::findOrFail($connector);
         abort_if($connector->tenant_id !== $tenant->id, 403);
 
         $connector->delete();
