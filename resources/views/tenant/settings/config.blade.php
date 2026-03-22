@@ -194,34 +194,59 @@
                         </div>
 
                         {{-- Navigation --}}
-                        <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
-                            <div>
-                                @if($currentStep > 1)
-                                <a href="{{ route('tenant.config.edit', ['tenantSlug' => $tenant->slug, 'step' => $currentStep - 1]) }}"
-                                   class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
-                                    ← Back
-                                </a>
-                                @endif
+                        @php
+                            $testRoutes = [
+                                1 => route('tenant.config.test.app-registration', ['tenantSlug' => $tenant->slug]),
+                                2 => route('tenant.config.test.storage',          ['tenantSlug' => $tenant->slug]),
+                                3 => route('tenant.config.test.search',           ['tenantSlug' => $tenant->slug]),
+                            ];
+                        @endphp
+                        <div class="mt-6 pt-4 border-t border-gray-100 space-y-4">
+
+                            {{-- Test Connection --}}
+                            <div class="flex items-center gap-3">
+                                <button type="button"
+                                    onclick="testConnection('{{ $testRoutes[$currentStep] }}')"
+                                    id="test-btn"
+                                    class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors shadow-sm">
+                                    <svg id="test-icon" class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    <span id="test-label">Test Connection</span>
+                                </button>
+                                <span id="test-result" class="text-sm hidden"></span>
                             </div>
 
-                            <div class="flex items-center gap-3">
-                                @if($currentStep < $totalSteps)
-                                <button type="submit"
-                                    class="inline-flex items-center gap-2 px-5 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
-                                    Save &amp; Next
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                    </svg>
-                                </button>
-                                @else
-                                <button type="submit"
-                                    class="inline-flex items-center gap-2 px-5 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors shadow-sm">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                    </svg>
-                                    Save &amp; Finish
-                                </button>
-                                @endif
+                            {{-- Back / Submit --}}
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    @if($currentStep > 1)
+                                    <a href="{{ route('tenant.config.edit', ['tenantSlug' => $tenant->slug, 'step' => $currentStep - 1]) }}"
+                                       class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
+                                        ← Back
+                                    </a>
+                                    @endif
+                                </div>
+
+                                <div class="flex items-center gap-3">
+                                    @if($currentStep < $totalSteps)
+                                    <button type="submit"
+                                        class="inline-flex items-center gap-2 px-5 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                                        Save &amp; Next
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </button>
+                                    @else
+                                    <button type="submit"
+                                        class="inline-flex items-center gap-2 px-5 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors shadow-sm">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        Save &amp; Finish
+                                    </button>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -241,6 +266,56 @@
         function toggleVisible(id) {
             const el = document.getElementById(id);
             el.type = el.type === 'password' ? 'text' : 'password';
+        }
+
+        async function testConnection(url) {
+            const btn    = document.getElementById('test-btn');
+            const label  = document.getElementById('test-label');
+            const icon   = document.getElementById('test-icon');
+            const result = document.getElementById('test-result');
+
+            // Spinner state
+            btn.disabled = true;
+            label.textContent = 'Testing…';
+            icon.innerHTML = '<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"/><path d="M4 12a8 8 0 018-8v4" stroke="currentColor" stroke-width="4" stroke-linecap="round" class="opacity-75"/>';
+            icon.classList.add('animate-spin');
+            result.className = 'text-sm hidden';
+
+            try {
+                const resp = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
+                            ?? '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                    },
+                });
+                const data = await resp.json();
+
+                if (data.success) {
+                    icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>';
+                    icon.classList.remove('animate-spin');
+                    icon.classList.add('text-green-500');
+                    result.textContent = data.message;
+                    result.className = 'text-sm text-green-600';
+                } else {
+                    icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>';
+                    icon.classList.remove('animate-spin');
+                    icon.classList.add('text-red-500');
+                    result.textContent = data.message;
+                    result.className = 'text-sm text-red-600';
+                }
+            } catch (e) {
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>';
+                icon.classList.remove('animate-spin');
+                icon.classList.add('text-red-500');
+                result.textContent = 'Request failed — check your network.';
+                result.className = 'text-sm text-red-600';
+            } finally {
+                btn.disabled = false;
+                label.textContent = 'Test Connection';
+                icon.classList.remove('text-gray-500');
+            }
         }
     </script>
 </x-app-layout>

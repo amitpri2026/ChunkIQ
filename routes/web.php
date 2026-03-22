@@ -9,6 +9,7 @@ use App\Http\Controllers\Tenant\ConnectorController;
 use App\Http\Controllers\Tenant\HandoffController;
 use App\Http\Controllers\Tenant\PipelineJobController;
 use App\Http\Controllers\Tenant\TenantConfigController;
+use App\Http\Controllers\Tenant\TenantConnectionTestController;
 use App\Http\Controllers\Tenant\TenantController;
 use App\Http\Controllers\Tenant\TenantInviteController;
 use App\Http\Controllers\Tenant\TenantMemberController;
@@ -41,8 +42,11 @@ Route::domain('{tenantSlug}.' . $appHost)
             Route::post('/invites',                          [TenantInviteController::class, 'store'])->name('tenant.invites.store');
 
             // Azure / ADLS + Function App configuration
-            Route::get('/settings/config',                   [TenantConfigController::class, 'edit'])->name('tenant.config.edit');
-            Route::post('/settings/config',                  [TenantConfigController::class, 'update'])->name('tenant.config.update');
+            Route::get('/settings/config',                        [TenantConfigController::class, 'edit'])->name('tenant.config.edit');
+            Route::post('/settings/config',                       [TenantConfigController::class, 'update'])->name('tenant.config.update');
+            Route::post('/settings/config/test/app-registration', [TenantConnectionTestController::class, 'testAppRegistration'])->name('tenant.config.test.app-registration');
+            Route::post('/settings/config/test/storage',          [TenantConnectionTestController::class, 'testStorage'])->name('tenant.config.test.storage');
+            Route::post('/settings/config/test/search',           [TenantConnectionTestController::class, 'testSearch'])->name('tenant.config.test.search');
 
             // Connectors (admin manages)
             Route::get('/connectors',                        [ConnectorController::class, 'index'])->name('tenant.connectors.index');
