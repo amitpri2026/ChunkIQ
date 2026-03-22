@@ -72,10 +72,11 @@ class ConnectorController extends Controller
             ->with('success', 'Connector "' . $request->name . '" added.');
     }
 
-    public function edit(int $connector): View
+    public function edit(Request $request): View
     {
+        $id        = (int) $request->route('connector');
         $tenant    = $this->manager->get();
-        $connector = Connector::findOrFail($connector);
+        $connector = Connector::findOrFail($id);
         abort_if($connector->tenant_id !== $tenant->id, 403);
 
         $settings = $connector->settings_decrypted;
@@ -83,10 +84,11 @@ class ConnectorController extends Controller
         return view('tenant.connectors.edit', compact('tenant', 'connector', 'settings'));
     }
 
-    public function update(Request $request, int $connector): RedirectResponse
+    public function update(Request $request): RedirectResponse
     {
+        $id        = (int) $request->route('connector');
         $tenant    = $this->manager->get();
-        $connector = Connector::findOrFail($connector);
+        $connector = Connector::findOrFail($id);
         abort_if($connector->tenant_id !== $tenant->id, 403);
 
         $request->validate(['name' => ['required', 'string', 'max:100']]);
@@ -113,10 +115,11 @@ class ConnectorController extends Controller
             ->with('success', 'Connector updated.');
     }
 
-    public function destroy(int $connector): RedirectResponse
+    public function destroy(Request $request): RedirectResponse
     {
+        $id        = (int) $request->route('connector');
         $tenant    = $this->manager->get();
-        $connector = Connector::findOrFail($connector);
+        $connector = Connector::findOrFail($id);
         abort_if($connector->tenant_id !== $tenant->id, 403);
 
         $connector->delete();
